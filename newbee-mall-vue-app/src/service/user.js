@@ -22,7 +22,7 @@ export function login(params) {
 }
 
 export function logout() {
-  return axios.post('/user/logout')
+  return axios.post('/users/mall/logout')
 }
 
 export function register(params) {

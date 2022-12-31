@@ -18,6 +18,6 @@ export function getCategory() {
 }
 
 export function search(params) {
-  return axios.get('/search', { params });
+  return axios.get('/goods/mall/search', { params });
 }
 
