@@ -146,6 +146,7 @@ export default {
       forbidClick: true
     });
     const { data } = await getHome()
+    console.log(data)
     this.swiperList = data.carousels
     this.newGoodses = data.newGoodses
     this.hots = data.hotGoodses
