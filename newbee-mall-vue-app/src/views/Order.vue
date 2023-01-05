@@ -10,40 +10,44 @@
 
 <template>
   <div class="order-box">
-    <s-header :name="'我的订单'" :back="'/user'"></s-header>
-    <van-tabs @change="onChangeTab" :color="'#1baeae'" :title-active-color="'#1baeae'" class="order-tab" v-model="status">
-      <van-tab title="全部" name=''></van-tab>
-      <van-tab title="待付款" name="0"></van-tab>
-      <van-tab title="待确认" name="1"></van-tab>
-      <van-tab title="待发货" name="2"></van-tab>
-      <van-tab title="已发货" name="3"></van-tab>
-      <van-tab title="交易完成" name="4"></van-tab>
-    </van-tabs>
-    <van-pull-refresh v-model="refreshing" @refresh="onRefresh" class="order-list-refresh">
-      <van-list
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-        @offset="300"
-      >
-        <div v-for="(item, index) in list" :key="index" class="order-item-box" @click="goTo(item.orderNo)">
-          <div class="order-item-header">
-            <span>订单时间：{{ item.createTime }}</span>
-            <span>{{ item.orderStatusString }}</span>
-          </div>
-          <van-card
-            v-for="one in item.newBeeMallOrderItemVOS"
-            :key="one.orderId"
-            :num="one.goodsCount"
-            :price="one.sellingPrice"
-            desc="全场包邮"
-            :title="one.goodsName"
-            :thumb="prefix(one.goodsCoverImg)"
-          />
-        </div>
-      </van-list>
-    </van-pull-refresh>
+    <div style="width: 100%;">
+      <TopNavigator>
+      </TopNavigator>
+    </div>
+    <!-- <s-header :name="'我的订单'" :back="'/user'"></s-header> -->
+    <el-select @change="onChangeTabElement" v-model="cateTab" placeholder="请选择">
+      <el-option value="" label="全部">全部</el-option>
+      <el-option value="0" label="待付款">待付款</el-option>
+      <el-option value="1" label="待确认">待确认</el-option>
+      <el-option value="2" label="待发货">待发货</el-option>
+      <el-option value="3" label="已发货">已发货</el-option>
+      <el-option value="4" label="交易完成">交易完成</el-option>
+    </el-select>
+    <el-table
+      :data="list"
+      style="width: 100%">
+      <el-table-column
+        prop="newBeeMallOrderItemVOS[0].goodsName"
+        label="商品">
+      </el-table-column>
+      <el-table-column
+        prop="total"
+        label="商品数量"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="createTime"
+        label="购买时间"
+        width="360">
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-size="5"
+      layout="prev, pager, next"
+      :total="totalCount">
+    </el-pagination>
   </div>
 </template>
 
@@ -51,6 +55,7 @@
 import sHeader from '@/components/SimpleHeader'
 import { getOrderList } from '../service/order'
 import { prefix } from '@/common/js/utils'
+import TopNavigator from '../components/TopNavigator.vue'
 
 export default {
   data() {
@@ -60,25 +65,42 @@ export default {
       finished: false,
       refreshing: false,
       list: [],
-      page: 1
+      page: 1,
+      cateTab: '',
+      totalCount: 0,
+      currentPage: 1,
     }
   },
   components: {
-    sHeader
+    // sHeader,
+    TopNavigator
   },
   async mounted() {
     // this.loadData()
   },
+  created() {
+    this.onLoad()
+  },
   methods: {
     async loadData() {
       const { data, data: { list } } = await getOrderList({ pageNumber: this.page, status: this.status })
-      this.list = this.list.concat(list)
-      this.totalPage = data.totalPage
+      this.list = list
+      for(let i=0;i<this.list.length;i++) {
+        this.list[i].goods = this.list[i].newBeeMallOrderItemVOS
+        let total = 0
+        for(let j=0;j<this.list[i].goods.length;j++) {
+          total += this.list[i].goods[j].goodsCount
+        }
+        this.list[i].total = total
+      }
+      this.totalCount = data.totalCount
+      console.log(this.totalPage)
       this.loading = false;
       if (this.page >= data.totalPage) this.finished = true
     },
-    onChangeTab(name, title) {
-      this.status = name
+    onChangeTabElement(key) {
+      console.log(key)
+      this.status = key
       this.onRefresh()
     },
     goTo(id) {
@@ -104,65 +126,16 @@ export default {
       this.page = 1
       this.onLoad()
     },
+    handleCurrentChange(pageNum) {
+      this.page = pageNum
+      this.loadData()
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  @import '../common/style/mixin';
   .order-box {
-    .order-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 10000;
-      .fj();
-      .wh(100%, 44px);
-      line-height: 44px;
-      padding: 0 10px;
-      .boxSizing();
-      color: #252525;
-      background: #fff;
-      border-bottom: 1px solid #dcdcdc;
-      .order-name {
-        font-size: 14px;
-      }
-    }
-    .order-tab {
-      margin-top: 44px;
-      position: fixed;
-      left: 0;
-      z-index: 1000;
-      width: 100%;
-    }
-    .order-list-refresh {
-      margin-top: 68px;
-      .van-card__content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      .van-pull-refresh__head {
-        background: #f9f9f9;
-      }
-      .van-list {
-        min-height: calc(100vh - 88px);
-        background: #f9f9f9;
-        margin-top: 20px;
-      }
-      .order-item-box {
-        margin: 20px 10px;
-        background-color: #fff;
-        .order-item-header {
-          padding: 10px 20px 0 20px;
-          display: flex;
-          justify-content: space-between;
-        }
-        .van-card {
-          background-color: #fff;
-          margin-top: 0;
-        }
-      }
-    }
+    width: 100%;
   }
 </style>
