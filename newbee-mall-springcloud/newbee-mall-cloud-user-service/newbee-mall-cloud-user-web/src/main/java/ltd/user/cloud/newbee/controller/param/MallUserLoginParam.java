@@ -27,4 +27,5 @@ public class MallUserLoginParam implements Serializable {
     @ApiModelProperty("用户密码(需要MD5加密)")
     @NotEmpty(message = "密码不能为空")
     private String passwordMd5;
+
 }
