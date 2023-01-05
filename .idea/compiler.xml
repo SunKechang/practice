@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="newbee-mall-cloud-shop-cart-api" />
+        <module name="newbee-mall-cloud-goods-api" />
+        <module name="newbee-mall-cloud-shop-cart-web" />
+        <module name="newbee-mall-cloud-gateway-mall" />
+        <module name="newbee-mall-cloud-order-web" />
+        <module name="newbee-mall-cloud-goods-web" />
+        <module name="newbee-mall-cloud-recommend-api" />
+        <module name="newbee-mall-cloud-recommend-web" />
+        <module name="newbee-mall-cloud-gateway-admin" />
+        <module name="newbee-mall-cloud-common" />
+        <module name="newbee-mall-cloud-user-api" />
+        <module name="newbee-mall-cloud-order-api" />
+        <module name="newbee-mall-cloud-user-web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="newbee-mall-cloud" target="1.8" />
+      <module name="newbee-mall-cloud-common" target="1.8" />
+      <module name="newbee-mall-cloud-gateway-admin" target="1.8" />
+      <module name="newbee-mall-cloud-gateway-mall" target="1.8" />
+      <module name="newbee-mall-cloud-goods-api" target="1.8" />
+      <module name="newbee-mall-cloud-goods-service" target="1.8" />
+      <module name="newbee-mall-cloud-goods-web" target="1.8" />
+      <module name="newbee-mall-cloud-order-api" target="1.8" />
+      <module name="newbee-mall-cloud-order-service" target="1.8" />
+      <module name="newbee-mall-cloud-order-web" target="1.8" />
+      <module name="newbee-mall-cloud-recommend-api" target="1.8" />
+      <module name="newbee-mall-cloud-recommend-service" target="1.8" />
+      <module name="newbee-mall-cloud-recommend-web" target="1.8" />
+      <module name="newbee-mall-cloud-shop-cart-api" target="1.8" />
+      <module name="newbee-mall-cloud-shop-cart-service" target="1.8" />
+      <module name="newbee-mall-cloud-shop-cart-web" target="1.8" />
+      <module name="newbee-mall-cloud-user-api" target="1.8" />
+      <module name="newbee-mall-cloud-user-service" target="1.8" />
+      <module name="newbee-mall-cloud-user-web" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
