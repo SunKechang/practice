@@ -1,4 +1,4 @@
 export default {
-  mode: 'test',
-  // mode: 'dev'
+  // mode: 'test',
+  mode: 'dev'
 }
