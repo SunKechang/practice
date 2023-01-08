@@ -11,6 +11,7 @@ package ltd.recommend.cloud.newbee.config;
 import com.alibaba.cloud.sentinel.SentinelProperties;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.SentinelWebInterceptor;
 import ltd.recommend.cloud.newbee.config.handler.TokenToAdminUserMethodArgumentResolver;
+import ltd.recommend.cloud.newbee.config.handler.TokenToMallUserMethodArgumentResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,16 @@ public class RecommendServiceWebMvcConfigurer extends WebMvcConfigurationSupport
     @Autowired
     private TokenToAdminUserMethodArgumentResolver tokenToAdminUserMethodArgumentResolver;
 
+    @Autowired
+    private TokenToMallUserMethodArgumentResolver tokenToMallUserMethodArgumentResolver;
+
     /**
      * @param argumentResolvers
      * @tip @TokenToAdminUser 注解处理方法
      */
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(tokenToAdminUserMethodArgumentResolver);
+        argumentResolvers.add(tokenToMallUserMethodArgumentResolver);
     }
 
     @Override

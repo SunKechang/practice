@@ -6,10 +6,10 @@
       <div class="search_and_cart">
         <div class="wide">
           <div class="logo" style="float: left"><img style="width: 100%" src="https://img10.360buyimg.com/img/jfs/t1/50166/9/22920/11310/63a1993cE3800216e/105f3d456f0905bb.jpg"></div>
-          <el-input style="width: 546px;margin-top: 65px;margin-left: 222px;" placeholder="请输入内容" v-model="input3" class="input-with-select">
+          <el-input style="width: 546px;margin-top: 48px;margin-left: 82px;" placeholder="请输入内容" v-model="input3" class="input-with-select">
             <el-button style="background-color: #f58c0c;color: white;" slot="append"  icon="el-icon-search">搜索</el-button>
           </el-input>
-          <el-button style="margin-left:10px;background-color: #ED6C3E;color: white;" slot="append"  icon="el-icon-goods">购物车</el-button>
+          <el-button style="background-color: #ED6C3E;color: white;" slot="append"  icon="el-icon-goods">购物车</el-button>
           <div class="logo" style="float: right"><img style="width: 100%" src="https://img13.360buyimg.com/babel/jfs/t1/192532/18/31574/14301/63aeb38dF5c55c212/38245c8dbdee113c.jpg.avif"></div>
         </div>
       </div>
@@ -146,15 +146,34 @@
             </el-menu>
           </div>
           <div class="sandi_images">
-            <el-carousel height="684px" :interval="5000" arrow="always">
-              <el-carousel-item height="684px"  v-for="item in swiperList" :key="item">
-              <el-link :href="item.redirectUrl"><el-image style="height: 684px;width: 1404px" fit="fill" :src="item.carouselUrl"></el-image></el-link>
+            <el-carousel height="475px" :interval="5000" arrow="always">
+              <el-carousel-item height="475px"  v-for="item in swiperList" :key="item">
+              <el-link :href="item.redirectUrl"><el-image style="height: 475px;width: 985px" fit="fill" :src="item.carouselUrl"></el-image></el-link>
               </el-carousel-item>
             </el-carousel>
           </div>
         </div>
       </div>
-      <div class="contents"></div>
+      <div class="wide"><el-divider style="background-color:#f4f4f4;">爆款推荐</el-divider></div>
+      <div class="contents">
+        <div class="wide">
+          <div class="content" v-for="item in hots" :key="item" @click="goToDetail(item)">
+            <el-image style="padding-top: 5px; height: 185px;width:217px" fit="fill" :src="item.goodsCoverImg"></el-image>
+            <div class="content_name"><h3>{{item.goodsName}}</h3></div>
+            <div class="content_describe" ><h3>{{item.goodsIntro}}</h3></div>
+            <div class="content_price"><span class="price_span">¥{{item.sellingPrice}}</span></div>
+          </div>
+        </div>
+        <div class="wide" ><el-divider style="background-color:#f4f4f4;">新品上市</el-divider></div>
+        <div class="wide">
+          <div class="content" v-for="item in newGoods" :key="item" @click="goToDetail(item)">
+            <el-image style="padding-top: 5px;height: 185px;width:217px" fit="fill" :src="item.goodsCoverImg"></el-image>
+            <div class="content_name" ><h3>{{item.goodsName}}</h3></div>
+            <div class="content_describe"><h3>{{item.goodsIntro}}</h3></div>
+            <div class="content_price"><span class="price_span">¥{{item.sellingPrice}}</span></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -172,6 +191,8 @@ export default {
   data(){
     return{
       swiperList: [],
+      hots:[],
+      newGoods:[]
     }
   },
   async mounted() {
@@ -188,8 +209,17 @@ export default {
     console.log(data)
     this.swiperList = data.carousels
     console.log(this.swiperList)
+    this.newGoods = data.newGoodses
+    console.log(this.newGoods)
+    this.hots = data.hotGoodses
+    console.log(this.hots)
     Toast.clear()
   },
+  methods:{
+    goToDetail(item) {
+      this.$router.push({ path: `product/${item.goodsId}` })
+    }
+  }
 }
 </script>
 <style scoped>
@@ -262,7 +292,7 @@ body > .el-container {
 .sandi_images{
   float: left;
   height: 475px;
-  width: 975px;
+  width: 985px;
   background-color: #fff;
 }
 .el-carousel__item h3 {
@@ -280,4 +310,70 @@ body > .el-container {
 .el-carousel__item:nth-child(2n+1) {
   background-color: #d3dce6;
 }
+.el-divider__text{
+  background-color: #f4f4f4;
+  font-size: 30px;
+}
+.contents{
+  background-color: #f4f4f4;
+
+}
+.contents .wide:after{
+  position: relative;
+  z-index: 11;
+  padding-top: 10px;
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+}
+.content{
+  float: left;
+  height: 310px;
+  width: 217px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+}
+.content_name{
+  width: 160px;margin-left: auto;margin-right: auto;margin-top: 13px;
+}
+.content_name h3{
+  font-size: 15px;font-weight: 400;color: #333;-webkit-transition: color .2s ease;transition: color .2s ease;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+}
+.content_describe{
+  width: 188px;margin-left: auto;margin-right: auto;margin-top: 13px;
+}
+.content_describe h3{
+  font-size: 12px;font-weight: 400;color: #333;-webkit-transition: color .2s ease;transition: color .2s ease;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+}
+.content_price{
+  position: relative;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  line-height: 24px;
+  overflow: hidden;
+  text-align: center;
+  width: 160px;
+  height: 24px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 7px;
+}
+.price_span{
+  height: 100%;
+  width: 66px;
+  background: #fff;
+  text-align: center;
+  color: #e1251b;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
 </style>

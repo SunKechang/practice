@@ -12,6 +12,7 @@ import ltd.common.cloud.newbee.dto.PageQueryUtil;
 import ltd.common.cloud.newbee.dto.PageResult;
 import ltd.recommend.cloud.newbee.controller.vo.NewBeeMallIndexConfigGoodsVO;
 import ltd.recommend.cloud.newbee.entity.IndexConfig;
+import ltd.recommend.cloud.newbee.entity.LoginMallUser;
 
 import java.util.List;
 
@@ -39,4 +40,6 @@ public interface NewBeeMallIndexConfigService {
      * @return
      */
     List<NewBeeMallIndexConfigGoodsVO> getConfigGoodsesForIndex(int configType, int number);
+
+    List<NewBeeMallIndexConfigGoodsVO> listNewGoods(int num);
 }

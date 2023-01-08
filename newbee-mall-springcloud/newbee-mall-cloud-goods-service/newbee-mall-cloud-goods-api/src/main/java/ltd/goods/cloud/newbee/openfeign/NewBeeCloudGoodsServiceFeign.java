@@ -9,6 +9,7 @@
 package ltd.goods.cloud.newbee.openfeign;
 
 import ltd.common.cloud.newbee.dto.Result;
+import ltd.goods.cloud.newbee.dto.GoodDTO;
 import ltd.goods.cloud.newbee.dto.NewBeeMallGoodsDTO;
 import ltd.goods.cloud.newbee.dto.UpdateStockNumDTO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -30,4 +31,11 @@ public interface NewBeeCloudGoodsServiceFeign {
 
     @PutMapping(value = "/admin/updateStock")
     Result<Boolean> updateStock(@RequestBody UpdateStockNumDTO updateStockNumDTO);
+
+    @GetMapping(value = "/mall/listNewGoods")
+    Result<List<GoodDTO>> listNewGoods(@RequestParam(value = "num") Integer num);
+
+    @GetMapping(value = "/mall/listSingleCateGoods")
+    Result<List<GoodDTO>> listSingleCateGoods(@RequestParam(value = "category") Long category,
+                                              @RequestParam(value = "num") Integer num);
 }

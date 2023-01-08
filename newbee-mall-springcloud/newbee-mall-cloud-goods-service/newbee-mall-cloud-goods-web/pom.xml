@@ -111,6 +111,12 @@
             <artifactId>newbee-mall-cloud-user-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>ltd.recommend.newbee.cloud</groupId>
+            <artifactId>newbee-mall-cloud-recommend-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
     <!--  @author 程序员十三

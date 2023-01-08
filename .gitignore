@@ -1,2 +1,3 @@
-./newbee-mall-springcloud/**/target/**
+newbee-mall-springcloud/**/target/
+newbee-mall-springcloud/newbee-mall-cloud-recommend-service/newbee-mall-cloud-recommend-web/target/
 .idea

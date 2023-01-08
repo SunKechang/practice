@@ -22,6 +22,7 @@ import ltd.common.cloud.newbee.util.BeanUtil;
 import ltd.goods.cloud.newbee.config.annotation.TokenToMallUser;
 import ltd.goods.cloud.newbee.controller.vo.NewBeeMallGoodsDetailVO;
 import ltd.goods.cloud.newbee.controller.vo.NewBeeMallSearchGoodsVO;
+import ltd.goods.cloud.newbee.entity.Good;
 import ltd.goods.cloud.newbee.entity.NewBeeMallGoods;
 import ltd.goods.cloud.newbee.service.NewBeeMallGoodsService;
 import org.slf4j.Logger;
@@ -108,10 +109,26 @@ public class NewBeeMallGoodsController {
         if (0 != goods.getGoodsSellStatus()) {
             NewBeeMallException.fail(ServiceResultEnum.GOODS_PUT_DOWN.getResult());
         }
+        newBeeMallGoodsService.insertBrowse(loginMallUserToken.getUserId(), goods.getGoodsCategoryId());
         NewBeeMallGoodsDetailVO goodsDetailVO = new NewBeeMallGoodsDetailVO();
         BeanUtil.copyProperties(goods, goodsDetailVO);
         goodsDetailVO.setGoodsCarouselList(goods.getGoodsCarousel().split(","));
         return ResultGenerator.genSuccessResult(goodsDetailVO);
+    }
+
+    @GetMapping("/listNewGoods")
+    @ApiOperation(value = "获取最新的n个商品", notes = "根据时间排序")
+    public Result listNewGoods(@RequestParam("num") Integer num) {
+        List<Good> goods = newBeeMallGoodsService.listNewGoods(num);
+        return ResultGenerator.genSuccessResult(goods);
+    }
+
+    @GetMapping("/listSingleCateGoods")
+    @ApiOperation(value = "获取对应种类的n个商品", notes = "")
+    public Result listSingleCateGoods(@RequestParam("category") Long category,
+                                      @RequestParam("num") Integer num) {
+        List<Good> goods = newBeeMallGoodsService.listSingleCateGoods(category, num);
+        return ResultGenerator.genSuccessResult(goods);
     }
 
 }

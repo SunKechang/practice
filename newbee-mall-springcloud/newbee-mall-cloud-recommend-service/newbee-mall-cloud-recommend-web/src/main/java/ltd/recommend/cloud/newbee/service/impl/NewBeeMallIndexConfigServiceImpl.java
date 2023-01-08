@@ -13,11 +13,13 @@ import ltd.common.cloud.newbee.dto.PageQueryUtil;
 import ltd.common.cloud.newbee.dto.PageResult;
 import ltd.common.cloud.newbee.dto.Result;
 import ltd.common.cloud.newbee.util.BeanUtil;
+import ltd.goods.cloud.newbee.dto.GoodDTO;
 import ltd.goods.cloud.newbee.dto.NewBeeMallGoodsDTO;
 import ltd.goods.cloud.newbee.openfeign.NewBeeCloudGoodsServiceFeign;
 import ltd.recommend.cloud.newbee.controller.vo.NewBeeMallIndexConfigGoodsVO;
 import ltd.recommend.cloud.newbee.dao.IndexConfigMapper;
 import ltd.recommend.cloud.newbee.entity.IndexConfig;
+import ltd.recommend.cloud.newbee.entity.LoginMallUser;
 import ltd.recommend.cloud.newbee.service.NewBeeMallIndexConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +39,7 @@ public class NewBeeMallIndexConfigServiceImpl implements NewBeeMallIndexConfigSe
 
     @Autowired
     private NewBeeCloudGoodsServiceFeign goodsService;
+
 
     @Override
     public PageResult getConfigsPage(PageQueryUtil pageUtil) {
@@ -122,4 +126,12 @@ public class NewBeeMallIndexConfigServiceImpl implements NewBeeMallIndexConfigSe
         }
         return newBeeMallIndexConfigGoodsVOS;
     }
+
+    @Override
+    public List<NewBeeMallIndexConfigGoodsVO> listNewGoods(int num) {
+        Result<List<GoodDTO>> goods = goodsService.listNewGoods(num);
+        return BeanUtil.copyList(goods.getData(), NewBeeMallIndexConfigGoodsVO.class);
+    }
+
+
 }

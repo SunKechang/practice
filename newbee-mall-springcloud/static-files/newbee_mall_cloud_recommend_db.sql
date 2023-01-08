@@ -76,3 +76,14 @@ VALUES
 (5,'https://newbee-mall.oss-cn-beijing.aliyuncs.com/images/banner2.png','https://juejin.cn/book/7085254558678515742',0,0,'2021-11-29 00:00:00',0,'2021-11-29 00:00:00',0),
 (6,'https://newbee-mall.oss-cn-beijing.aliyuncs.com/images/banner1.png','##',101,1,'2021-09-19 23:37:40',0,'2021-11-07 00:15:52',0),
 (7,'https://newbee-mall.oss-cn-beijing.aliyuncs.com/images/banner2.png','##',99,1,'2021-09-19 23:37:58',0,'2021-10-22 00:15:01',0);
+
+
+DROP TABLE IF EXISTS `tb_newbee_mall_browse`;
+# 创建用户浏览表
+CREATE TABLE `tb_newbee_mall_browse` (
+                                           `browse_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户浏览主键id',
+                                           `user_id` bigint(20) NOT NULL COMMENT '用户id',
+                                           `category_id` bigint(20) NOT NULL COMMENT '种类id',
+                                           PRIMARY KEY (`browse_id`) USING BTREE,
+                                           KEY (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
