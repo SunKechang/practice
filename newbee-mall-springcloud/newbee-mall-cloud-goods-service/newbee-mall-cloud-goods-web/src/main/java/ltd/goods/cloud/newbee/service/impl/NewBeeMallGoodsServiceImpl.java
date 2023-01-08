@@ -17,14 +17,17 @@ import ltd.common.cloud.newbee.util.BeanUtil;
 import ltd.goods.cloud.newbee.controller.vo.NewBeeMallSearchGoodsVO;
 import ltd.goods.cloud.newbee.dao.GoodsCategoryMapper;
 import ltd.goods.cloud.newbee.dao.NewBeeMallGoodsMapper;
+import ltd.goods.cloud.newbee.entity.Good;
 import ltd.goods.cloud.newbee.entity.GoodsCategory;
 import ltd.goods.cloud.newbee.entity.NewBeeMallGoods;
 import ltd.goods.cloud.newbee.entity.StockNumDTO;
 import ltd.goods.cloud.newbee.service.NewBeeMallGoodsService;
+import ltd.recommend.cloud.newbee.openfeign.NewBeeCloudRecommendServiceFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +39,9 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     private NewBeeMallGoodsMapper goodsMapper;
     @Autowired
     private GoodsCategoryMapper goodsCategoryMapper;
+
+    @Autowired
+    private NewBeeCloudRecommendServiceFeign recommendServiceFeign;
 
     @Override
     public PageResult getNewBeeMallGoodsPage(PageQueryUtil pageUtil) {
@@ -139,5 +145,20 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
     @Override
     public Boolean updateStockNum(List<StockNumDTO> stockNumDTOS) {
         return goodsMapper.updateStockNum(stockNumDTOS) > 0;
+    }
+
+    @Override
+    public List<Good> listNewGoods(Integer num) {
+        return goodsMapper.listNewGoods(num);
+    }
+
+    @Override
+    public List<Good> listSingleCateGoods(long category, int num) {
+        return goodsMapper.listSingleGoods(category, num);
+    }
+
+    @Override
+    public void insertBrowse(long userId, long categoryId) {
+        recommendServiceFeign.addBrowse(userId, categoryId);
     }
 }

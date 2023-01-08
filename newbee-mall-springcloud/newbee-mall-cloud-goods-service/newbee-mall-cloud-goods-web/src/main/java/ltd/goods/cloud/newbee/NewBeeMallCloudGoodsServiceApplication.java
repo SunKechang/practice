@@ -24,7 +24,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan("ltd.goods.cloud.newbee.dao")
-@EnableFeignClients(basePackageClasses = {NewBeeCloudUserServiceFeign.class})
+@EnableFeignClients(basePackageClasses = {NewBeeCloudUserServiceFeign.class,
+        ltd.recommend.cloud.newbee.openfeign.NewBeeCloudRecommendServiceFeign.class})
 public class NewBeeMallCloudGoodsServiceApplication {
 
     public static void main(String[] args) {
