@@ -112,7 +112,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>                
+                <version>${spring.boot.version}</version>
             </plugin>
         </plugins>
     </build>
@@ -125,8 +125,4 @@
         </repository>
     </repositories>
 
-    <!--  @author 程序员十三
-      @qq交流群 791509631
-      @email 2449207463@qq.com
-      @link https://github.com/newbee-ltd -->
 </project>

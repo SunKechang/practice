@@ -26,6 +26,7 @@ import ltd.user.cloud.newbee.entity.MallUser;
 import ltd.user.cloud.newbee.service.NewBeeMallUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -100,6 +101,8 @@ public class NewBeeMallCloudPersonalController {
     @PutMapping("/update")
     @ApiOperation(value = "修改用户信息", notes = "")
     public Result updateInfo(@RequestBody @ApiParam("用户信息") MallUserUpdateParam mallUserUpdateParam, @TokenToMallUser MallUserToken loginMallUserToken) {
+        System.out.println("前端传来的更改信息---");
+        System.out.println(mallUserUpdateParam);
         Boolean flag = newBeeMallUserService.updateUserInfo(mallUserUpdateParam, loginMallUserToken.getUserId());
         if (flag) {
             //返回成功
@@ -118,6 +121,8 @@ public class NewBeeMallCloudPersonalController {
         NewBeeMallUserVO mallUserVO = new NewBeeMallUserVO();
         MallUser userDetailByToken = newBeeMallUserService.getUserDetailByToken(loginMallUserToken.getToken());
         BeanUtil.copyProperties(userDetailByToken, mallUserVO);
+        System.out.print("获得个人信息---");
+        System.out.println(mallUserVO);
         return ResultGenerator.genSuccessResult(mallUserVO);
     }
 

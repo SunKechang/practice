@@ -94,9 +94,13 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
         }
         user.setNickName(mallUser.getNickName());
         //若密码为空字符，则表明用户不打算修改密码，使用原密码保存
-        if (!MD5Util.MD5Encode("", "UTF-8").equals(mallUser.getPasswordMd5())) {
-            user.setPasswordMd5(mallUser.getPasswordMd5());
-        }
+//        if (!MD5Util.MD5Encode("", "UTF-8").equals(mallUser.getPasswordMd5())) {
+//            user.setPasswordMd5(mallUser.getPasswordMd5());
+//        }
+//        System.out.println(mallUser.getSex());
+        user.setMail(mallUser.getMail());
+        user.setSex(mallUser.getSex());
+        user.setTelephone(mallUser.getTelephone());
         user.setIntroduceSign(mallUser.getIntroduceSign());
         if (mallUserMapper.updateByPrimaryKeySelective(user) > 0) {
             return true;

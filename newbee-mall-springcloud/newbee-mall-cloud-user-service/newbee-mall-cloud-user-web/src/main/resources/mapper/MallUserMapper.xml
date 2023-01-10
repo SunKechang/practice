@@ -18,10 +18,13 @@ Copyright (c) 2022 程序员十三 all rights reserved.
         <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
         <result column="locked_flag" jdbcType="TINYINT" property="lockedFlag"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="mail" jdbcType="VARCHAR" property="mail"/>
     </resultMap>
     <sql id="Base_Column_List">
     user_id, nick_name, login_name, password_md5, introduce_sign, is_deleted,
-    locked_flag, create_time
+    locked_flag, create_time , sex , telephone , mail
   </sql>
 
     <select id="findMallUserList" parameterType="Map" resultMap="BaseResultMap">
@@ -69,11 +72,11 @@ Copyright (c) 2022 程序员十三 all rights reserved.
     where user_id = #{userId,jdbcType=BIGINT} and is_deleted = 0
   </update>
     <insert id="insert" parameterType="ltd.user.cloud.newbee.entity.MallUser">
-    insert into tb_newbee_mall_user (user_id, nick_name, login_name, 
+    insert into tb_newbee_mall_user (user_id, nick_name, login_name,
       password_md5, introduce_sign,
       is_deleted, locked_flag, create_time
       )
-    values (#{userId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, 
+    values (#{userId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
       #{passwordMd5,jdbcType=VARCHAR}, #{introduceSign,jdbcType=VARCHAR},
       #{isDeleted,jdbcType=TINYINT}, #{lockedFlag,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}
       )
@@ -163,12 +166,15 @@ Copyright (c) 2022 程序员十三 all rights reserved.
     <update id="updateByPrimaryKey" parameterType="ltd.user.cloud.newbee.entity.MallUser">
     update tb_newbee_mall_user
     set nick_name = #{nickName,jdbcType=VARCHAR},
-      login_name = #{loginName,jdbcType=VARCHAR},
-      password_md5 = #{passwordMd5,jdbcType=VARCHAR},
       introduce_sign = #{introduceSign,jdbcType=VARCHAR},
-      is_deleted = #{isDeleted,jdbcType=TINYINT},
-      locked_flag = #{lockedFlag,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+        login_name = #{loginName,jdbcType=VARCHAR},
+        password_md5 = #{passwordMd5,jdbcType=VARCHAR},
+        is_deleted = #{isDeleted,jdbcType=TINYINT},
+        locked_flag = #{lockedFlag,jdbcType=TINYINT},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      sex = #{sex,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      mail = #{mail,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
     <update id="lockUserBatch">
