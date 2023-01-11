@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@Api(value = "v1", tags = "新蜂商城用户操作相关接口")
+@Api(value = "v1", tags = "商城用户操作相关接口")
 @RequestMapping("/users/mall")
 public class NewBeeMallCloudPersonalController {
 
@@ -50,7 +50,7 @@ public class NewBeeMallCloudPersonalController {
 
         logger.info("login api,loginName={},loginResult={}", mallUserLoginParam.getLoginName(), loginResult);
 
-        //登录成功
+        //登录成功 StringUtils String的工具类
         if (!StringUtils.isEmpty(loginResult) && loginResult.length() == 32) {
             Result result = ResultGenerator.genSuccessResult();
             result.setData(loginResult);

@@ -108,6 +108,15 @@ Copyright (c) 2022 程序员十三 all rights reserved.
             <if test="createTime != null">
                 create_time,
             </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="mail != null">
+                mail,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">

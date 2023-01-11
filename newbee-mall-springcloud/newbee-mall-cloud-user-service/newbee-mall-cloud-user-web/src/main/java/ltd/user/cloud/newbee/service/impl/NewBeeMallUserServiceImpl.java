@@ -1,11 +1,3 @@
-/**
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本软件已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2022 程序员十三 all rights reserved.
- * 版权所有，侵权必究！
- */
 package ltd.user.cloud.newbee.service.impl;
 
 import ltd.common.cloud.newbee.enums.ServiceResultEnum;
@@ -28,6 +20,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author 22729
+ */
 @Service
 public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
 
@@ -45,7 +40,10 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
         MallUser registerUser = new MallUser();
         registerUser.setLoginName(loginName);
         registerUser.setNickName(loginName);
-        registerUser.setIntroduceSign("随新所欲，蜂富多彩");
+        registerUser.setSex("none");
+        registerUser.setIntroduceSign("...");
+        registerUser.setTelephone(loginName);
+        registerUser.setMail("");
         String passwordMD5 = MD5Util.MD5Encode(password, "UTF-8");
         registerUser.setPasswordMd5(passwordMD5);
         if (mallUserMapper.insertSelective(registerUser) > 0) {
@@ -66,6 +64,7 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
             MallUserToken mallUserToken = new MallUserToken();
             mallUserToken.setUserId(user.getUserId());
             mallUserToken.setToken(token);
+            // 操作redis字符串
             ValueOperations<String, MallUserToken> setToken = redisTemplate.opsForValue();
             setToken.set(token, mallUserToken, 7 * 24 * 60 * 60, TimeUnit.SECONDS);//过期时间7天
             return token;
