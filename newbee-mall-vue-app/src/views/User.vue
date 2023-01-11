@@ -56,27 +56,13 @@
         </div>
         <!-- 账号安全 -->
         <div v-else-if="this.index==='2'" style="margin-top: 30px;margin-left: 20px">
-          <!-- 联系电话-->
-<!--          <el-divider content-position="left">电话修改</el-divider>-->
-<!--          <div>-->
-<!--            <label style="padding-right: 10px;font-size: 16px">联系电话: </label>-->
-<!--            <el-input type="text" style="width: 200px;margin-right: 20px" v-model="myInfoForm.telephone"></el-input>-->
-<!--            <el-button type="primary"  @click="changeTel" size="medium">更改</el-button>-->
-<!--          </div>-->
-<!--          &lt;!&ndash; 邮箱 &ndash;&gt;-->
-<!--          <el-divider content-position="left">邮箱修改</el-divider>-->
-<!--          <div style="margin-top: 30px">-->
-<!--            <label style="padding-right: 10px;font-size: 16px">注册邮箱: </label>-->
-<!--            <el-input type="text" style="width: 200px;margin-right: 20px" v-model="myInfoForm.mail"></el-input>-->
-<!--            <el-button type="primary"  @click="changeMail" size="medium">更改</el-button>-->
-<!--          </div>-->
 
           <!-- 密码 -->
           <el-divider content-position="left">密码修改</el-divider>
           <div style="margin-top: 30px;width: 300px">
             <el-form ref="pwdRef" :model="pwdForm" label-width="80px">
               <el-form-item label="旧密码" prop="oldPwd">
-                <el-input v-model="pwdForm.oldPwd" placeholder="请输入旧密码"></el-input>
+                <el-input v-model="pwdForm.oldPwd" placeholder="请输入旧密码" show-password="true"></el-input>
               </el-form-item>
               <el-form-item label="注册邮箱" prop="mail">
                 <el-input v-model="pwdForm.mail" placeholder="请输入注册邮箱"></el-input>
@@ -88,10 +74,10 @@
                 <el-input v-model="pwdForm.code" placeholder="请输入验证码"></el-input>
               </el-form-item>
               <el-form-item label="新密码" prop="newPwd">
-                <el-input v-model="pwdForm.newPwd" placeholder="请输入新密码"></el-input>
+                <el-input v-model="pwdForm.newPwd" placeholder="请输入新密码" show-password="true"></el-input>
               </el-form-item>
               <el-form-item label="确认" prop="newPwd2">
-                <el-input v-model="pwdForm.newPwd2" placeholder="再次输入新密码"></el-input>
+                <el-input v-model="pwdForm.newPwd2" placeholder="再次输入新密码" show-password="true"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="changePwd">提交</el-button>
@@ -100,9 +86,6 @@
           </div>
         </div>
 
-        <div v-else>
-
-        </div>
       </el-main>
     </el-container>
 
@@ -155,11 +138,12 @@ export default {
         mail: this.myInfoForm.mail
       }
       const { data } = await EditUserInfo(params)
+      console.log(data)
       this.$message({
         message: '修改成功!',
         type: 'success'
       });
-      location.reload();
+      // location.reload();
     },
     changePwd(){
 
