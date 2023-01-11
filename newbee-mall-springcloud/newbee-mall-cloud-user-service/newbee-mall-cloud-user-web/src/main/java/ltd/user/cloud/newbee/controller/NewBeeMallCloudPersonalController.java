@@ -1,11 +1,3 @@
-/**
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本软件已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2022 程序员十三 all rights reserved.
- * 版权所有，侵权必究！
- */
 package ltd.user.cloud.newbee.controller;
 
 import io.swagger.annotations.Api;
@@ -23,15 +15,19 @@ import ltd.user.cloud.newbee.controller.param.MallUserRegisterParam;
 import ltd.user.cloud.newbee.controller.param.MallUserUpdateParam;
 import ltd.user.cloud.newbee.controller.vo.NewBeeMallUserVO;
 import ltd.user.cloud.newbee.entity.MallUser;
+import ltd.user.cloud.newbee.service.MailService;
 import ltd.user.cloud.newbee.service.NewBeeMallUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @Api(value = "v1", tags = "新蜂商城用户操作相关接口")
@@ -46,6 +42,7 @@ public class NewBeeMallCloudPersonalController {
     @PostMapping("/login")
     @ApiOperation(value = "登录接口", notes = "返回token")
     public Result<String> login(@RequestBody @Valid MallUserLoginParam mallUserLoginParam) {
+        // 判断是否是11位手机号
         if (!NumberUtil.isPhone(mallUserLoginParam.getLoginName())){
             return ResultGenerator.genFailResult(ServiceResultEnum.LOGIN_NAME_IS_NOT_PHONE.getResult());
         }
@@ -101,8 +98,6 @@ public class NewBeeMallCloudPersonalController {
     @PutMapping("/update")
     @ApiOperation(value = "修改用户信息", notes = "")
     public Result updateInfo(@RequestBody @ApiParam("用户信息") MallUserUpdateParam mallUserUpdateParam, @TokenToMallUser MallUserToken loginMallUserToken) {
-        System.out.println("前端传来的更改信息---");
-        System.out.println(mallUserUpdateParam);
         Boolean flag = newBeeMallUserService.updateUserInfo(mallUserUpdateParam, loginMallUserToken.getUserId());
         if (flag) {
             //返回成功
@@ -136,4 +131,20 @@ public class NewBeeMallCloudPersonalController {
         }
         return ResultGenerator.genFailResult("无此用户数据");
     }
+
+
+//    @GetMapping("/simple")
+//    public Map<String, Object> sendSimpleMail() {
+//        Map<String, Object> map = new HashMap<>();
+//        try {
+//            //参数就是接收邮件的邮箱，根据自己实际填写
+//            mailService.simpleMail("lml2272944319@gmail.com");
+//            map.put("res", "success");
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//            map.put("res", "error");
+//        }
+//        return map;
+//    }
 }
