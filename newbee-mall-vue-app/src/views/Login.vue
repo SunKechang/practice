@@ -6,7 +6,7 @@
           <el-input v-model="ruleForm.username"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="ruleForm.password" autocomplete="off"  show-password="true"></el-input>
+          <el-input type="password" v-model="ruleForm.password" autocomplete="off"  show-password=true></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="text" @click="toRegister()">注册</el-button>

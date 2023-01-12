@@ -37,12 +37,14 @@ CREATE TABLE `tb_newbee_mall_user` (
                                        `is_deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT '注销标识字段(0-正常 1-已注销)',
                                        `locked_flag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '锁定标识字段(0-未锁定 1-已锁定)',
                                        `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
+                                       `sex` varchar(5) NOT NULL DEFAULT '' COMMENT '性别',
+                                       `telephone` varchar(11) NOT NULL DEFAULT '' COMMENT '联系电话',
+                                       `mail` varchar(30) NOT NULL DEFAULT '' COMMENT '邮箱',
                                        PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 # 新增商城用户数据
 
-INSERT INTO `tb_newbee_mall_user` (`user_id`, `nick_name`, `login_name`, `password_md5`, `introduce_sign`, `is_deleted`, `locked_flag`, `create_time`)
+INSERT INTO `tb_newbee_mall_user` (`user_id`, `nick_name`, `login_name`, `password_md5`, `introduce_sign`, `is_deleted`, `locked_flag`, `create_time`, `sex`, `telephone`, `mail`)
 VALUES
-(1,'十三','13700002703','e10adc3949ba59abbe56e057f20f883e','我不怕千万人阻挡，只怕自己投降',0,0,'2022-05-22 08:44:57'),
-(6,'陈尼克','13711113333','e10adc3949ba59abbe56e057f20f883e','测试用户陈尼克',0,0,'2022-05-22 08:44:57');
+(1,'111','18192260687','698d51a19d8a121ce581499d7b701668','测试用户',0,0,'2022-05-22 08:44:57','none','18192260687','none');

@@ -62,7 +62,7 @@
           <div style="margin-top: 30px;width: 300px">
             <el-form ref="pwdRef" :model="pwdForm" label-width="80px">
               <el-form-item label="旧密码" prop="oldPwd">
-                <el-input v-model="pwdForm.oldPwd" placeholder="请输入旧密码" show-password="true"></el-input>
+                <el-input v-model="pwdForm.oldPwd" placeholder="请输入旧密码" show-password=true></el-input>
               </el-form-item>
               <el-form-item label="注册电话" prop="telephone">
                 <el-input v-model="pwdForm.telephone" placeholder="请输入注册电话"></el-input>
@@ -74,10 +74,10 @@
                 <el-input v-model="pwdForm.code" placeholder="请输入验证码"></el-input>
               </el-form-item>
               <el-form-item label="新密码" prop="newPwd">
-                <el-input v-model="pwdForm.newPwd" placeholder="请输入新密码" show-password="true"></el-input>
+                <el-input v-model="pwdForm.newPwd" placeholder="请输入新密码" show-password=true></el-input>
               </el-form-item>
               <el-form-item label="确认" prop="newPwd2">
-                <el-input v-model="pwdForm.newPwd2" placeholder="再次输入新密码" show-password="true"></el-input>
+                <el-input v-model="pwdForm.newPwd2" placeholder="再次输入新密码" show-password=true></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="changePwd">提交</el-button>
@@ -126,7 +126,7 @@ export default {
   async mounted() {
     const { data } = await getUserInfo()
     this.myInfoForm = data;
-    console.log(data)
+    // console.log(data)
   },
   methods: {
     async changeInfo(){
@@ -149,8 +149,8 @@ export default {
     changePwd(){
 
     },
-    async getCode(){
-      const {data1}=await axios.post('/users/mall/code',this.pwdForm.telephone);
+    getCode(){
+      const {data1}=axios.post('/users/mall/code',this.pwdForm.telephone);
       console.log(data1);
     },
     // goTo(r) {

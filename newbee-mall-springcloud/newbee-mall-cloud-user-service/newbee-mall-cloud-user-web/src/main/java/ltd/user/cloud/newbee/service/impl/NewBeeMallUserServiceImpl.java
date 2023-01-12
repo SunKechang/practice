@@ -1,5 +1,7 @@
 package ltd.user.cloud.newbee.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zhenzi.sms.ZhenziSmsClient;
 import ltd.common.cloud.newbee.enums.ServiceResultEnum;
 import ltd.common.cloud.newbee.dto.PageQueryUtil;
@@ -168,7 +170,10 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
         params.put("templateParams", templateParams);
         try {
             String result = client.send(params);
-            return result;
+            JSONObject jsonObject= JSON.parseObject(result);
+            jsonObject.put("phoneCode",code);
+            String end=JSON.toJSONString(jsonObject);
+            return end;
         } catch (Exception e) {
             e.printStackTrace();
         }
