@@ -64,8 +64,8 @@
               <el-form-item label="旧密码" prop="oldPwd">
                 <el-input v-model="pwdForm.oldPwd" placeholder="请输入旧密码" show-password="true"></el-input>
               </el-form-item>
-              <el-form-item label="注册邮箱" prop="mail">
-                <el-input v-model="pwdForm.mail" placeholder="请输入注册邮箱"></el-input>
+              <el-form-item label="注册电话" prop="mail">
+                <el-input v-model="pwdForm.telephone" placeholder="请输入注册电话"></el-input>
               </el-form-item>
               <el-form-item >
                 <el-button type="primary" @click="getCode">获取验证码</el-button>
@@ -95,6 +95,7 @@
 <script>
 import {EditUserInfo, getUserInfo} from '../service/user'
 import TopNavigator from '@/components/TopNavigator'
+import axios from "../utils/axios";
 export default {
   components: {
     TopNavigator
@@ -114,7 +115,7 @@ export default {
       },
       pwdForm:{
         oldPwd:'',
-        mail:'',
+        telephone:'',
         code:'',
         newPwd:'',
         newPwd2:''
@@ -148,12 +149,12 @@ export default {
     changePwd(){
 
     },
-    getCode(){
-
+    async getCode(){
+      const {data1}=await axios.post('/users/mall/code',{
+        "phone": this.pwdForm.telephone
+      });
+      console.log(data1);
     },
-    // goBack() {
-    //   this.$router.go(-1)
-    // },
     // goTo(r) {
     //   this.$router.push({ path: r })
     // },
