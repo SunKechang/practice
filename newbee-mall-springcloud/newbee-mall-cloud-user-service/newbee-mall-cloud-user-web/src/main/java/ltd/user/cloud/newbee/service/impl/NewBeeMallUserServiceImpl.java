@@ -1,5 +1,6 @@
 package ltd.user.cloud.newbee.service.impl;
 
+import com.zhenzi.sms.ZhenziSmsClient;
 import ltd.common.cloud.newbee.enums.ServiceResultEnum;
 import ltd.common.cloud.newbee.dto.PageQueryUtil;
 import ltd.common.cloud.newbee.dto.PageResult;
@@ -17,7 +18,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -145,5 +148,26 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
             return false;
         }
         return mallUserMapper.lockUserBatch(ids, lockStatus) > 0;
+    }
+
+    @Override
+    public String send(String phoneNumber, String code){
+        // 使用自己的 AppId 和 AppSecret
+        ZhenziSmsClient client = new ZhenziSmsClient("https://sms_developer.zhenzikj.com", "110913", "14d24011-9542-4cf4-a3a3-16aa541284ce");
+        Map<String, Object> params = new HashMap<>();
+        params.put("number", phoneNumber);
+        // 修改为自己的templateId
+        params.put("templateId", "8182");
+        String[] templateParams = new String[1];
+        templateParams[0] = code;
+        params.put("templateParams", templateParams);
+        try {
+            String result = client.send(params);
+//            System.out.println(result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "kong";
     }
 }
