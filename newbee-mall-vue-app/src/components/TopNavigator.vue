@@ -21,7 +21,12 @@
 
 <script>
 export default {
-  name: 'TopNavigator'
+  name: 'TopNavigator',
+  methods:{
+    handleSelect(e){
+      console.log(e)
+    }
+  }
 }
 </script>
 
