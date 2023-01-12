@@ -100,6 +100,7 @@ export default {
           type: 'success'
         });
         this.type = 'login'
+        console.log(data)
       }
     },
     // success(obj) {

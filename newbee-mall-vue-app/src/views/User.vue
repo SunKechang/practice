@@ -64,7 +64,7 @@
               <el-form-item label="旧密码" prop="oldPwd">
                 <el-input v-model="pwdForm.oldPwd" placeholder="请输入旧密码" show-password="true"></el-input>
               </el-form-item>
-              <el-form-item label="注册电话" prop="mail">
+              <el-form-item label="注册电话" prop="telephone">
                 <el-input v-model="pwdForm.telephone" placeholder="请输入注册电话"></el-input>
               </el-form-item>
               <el-form-item >
@@ -144,15 +144,13 @@ export default {
         message: '修改成功!',
         type: 'success'
       });
-      // location.reload();
+      location.reload();
     },
     changePwd(){
 
     },
     async getCode(){
-      const {data1}=await axios.post('/users/mall/code',{
-        "phone": this.pwdForm.telephone
-      });
+      const {data1}=await axios.post('/users/mall/code',this.pwdForm.telephone);
       console.log(data1);
     },
     // goTo(r) {
