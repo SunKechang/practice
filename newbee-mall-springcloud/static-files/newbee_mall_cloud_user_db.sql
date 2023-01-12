@@ -44,5 +44,5 @@ CREATE TABLE `tb_newbee_mall_user` (
 
 INSERT INTO `tb_newbee_mall_user` (`user_id`, `nick_name`, `login_name`, `password_md5`, `introduce_sign`, `is_deleted`, `locked_flag`, `create_time`)
 VALUES
-(1,'十三','13700002703','e10adc3949ba59abbe56e057f20f883e','我不怕千万人阻挡，只怕自己投降',0,0,'2022-05-22 08:44:57'),
+(1,'十三','13811239675','698d51a19d8a121ce581499d7b701668','我不怕千万人阻挡，只怕自己投降',0,0,'2022-05-22 08:44:57'),
 (6,'陈尼克','13711113333','e10adc3949ba59abbe56e057f20f883e','测试用户陈尼克',0,0,'2022-05-22 08:44:57');

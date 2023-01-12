@@ -24,7 +24,7 @@ public class NewBeeMallBrowseServiceImpl implements NewBeeMallBrowseService {
     @Autowired
     private NewBeeCloudGoodsServiceFeign goodsService;
 
-    private static int selfCommentNum = 8;
+    private static int selfCommentNum = 10;
 
     @Override
     public void addBrowse(Browse browse) {

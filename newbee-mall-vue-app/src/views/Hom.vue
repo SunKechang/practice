@@ -148,7 +148,7 @@
           <div class="sandi_images">
             <el-carousel height="475px" :interval="5000" arrow="always">
               <el-carousel-item height="475px"  v-for="item in swiperList" :key="item">
-              <el-link :href="item.redirectUrl"><el-image style="height: 475px;width: 985px" fit="fill" :src="item.carouselUrl"></el-image></el-link>
+              <el-image style="height: 475px;width: 985px" fit="fill" :src="item.carouselUrl"></el-image>
               </el-carousel-item>
             </el-carousel>
           </div>
@@ -173,6 +173,15 @@
             <div class="content_price"><span class="price_span">¥{{item.sellingPrice}}</span></div>
           </div>
         </div>
+        <div class="wide" ><el-divider style="background-color:#f4f4f4;">猜你喜欢</el-divider></div>
+        <div class="wide">
+          <div class="content" v-for="item in recommendGoods" :key="item" @click="goToDetail(item)">
+            <el-image style="padding-top: 5px;height: 185px;width:217px" fit="fill" :src="prefix(item.goodsCoverImg)"></el-image>
+            <div class="content_name" ><h3>{{item.goodsName}}</h3></div>
+            <div class="content_describe"><h3>{{item.goodsIntro}}</h3></div>
+            <div class="content_price"><span class="price_span">¥{{item.sellingPrice}}</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -192,7 +201,8 @@ export default {
     return{
       swiperList: [],
       hots:[],
-      newGoods:[]
+      newGoods:[],
+      recommendGoods:[]
     }
   },
   async mounted() {
@@ -208,16 +218,14 @@ export default {
     const { data } = await getHome()
     console.log(data)
     this.swiperList = data.carousels
-    console.log(this.swiperList)
     this.newGoods = data.newGoodses
-    console.log(this.newGoods)
     this.hots = data.hotGoodses
-    console.log(this.hots)
+    this.recommendGoods = data.recommendGoodses
     Toast.clear()
   },
   methods:{
     goToDetail(item) {
-      this.$router.push({ path: `product/${item.goodsId}` })
+      this.$router.push({ path: `product`,query:{id:item.goodsId} })
     }
   }
 }
