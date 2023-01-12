@@ -6,17 +6,17 @@
       <div class="search_and_cart">
         <div class="wide">
           <div class="logo" style="float: left"><img style="width: 100%" src="https://img10.360buyimg.com/img/jfs/t1/50166/9/22920/11310/63a1993cE3800216e/105f3d456f0905bb.jpg"></div>
-          <el-input style="width: 546px;margin-top: 48px;margin-left: 82px;" placeholder="请输入内容" v-model="input3" class="input-with-select">
+          <el-input style="width: 546px;margin-top: 48px;margin-left: 82px;" placeholder="请输入内容"  class="input-with-select">
             <el-button style="background-color: #f58c0c;color: white;" slot="append"  icon="el-icon-search">搜索</el-button>
           </el-input>
-          <el-button style="background-color: #ED6C3E;color: white;" slot="append"  icon="el-icon-goods">购物车</el-button>
+          <el-button @click="goTo" style="background-color: #ED6C3E;color: white;" slot="append"  icon="el-icon-goods">购物车</el-button>
           <div class="logo" style="float: right"><img style="width: 100%" src="https://img13.360buyimg.com/babel/jfs/t1/192532/18/31574/14301/63aeb38dF5c55c212/38245c8dbdee113c.jpg.avif"></div>
         </div>
       </div>
       <div class="sort_and_images">
         <div class="wide">
           <div class="sandi_aside">
-            <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+            <el-menu   class="el-menu-demo" mode="vertical">
               <el-menu-item index="1">
                 <el-popover
                   placement="right"
@@ -24,7 +24,7 @@
                   <span slot="reference">
                     家电<el-divider direction="vertical"></el-divider>数码<el-divider direction="vertical"></el-divider>手机<i class="el-icon-arrow-right"></i>
                   </span>
-                  <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                  <el-menu   class="el-menu-demo" mode="vertical">
                     <el-menu-item index="1">生活电器</el-menu-item>
                     <el-menu-item index="2">wer</el-menu-item>
                     <el-menu-item index="3">厨房神器</el-menu-item>
@@ -48,7 +48,7 @@
                   <span slot="reference">
                     女装<el-divider direction="vertical"></el-divider>男装<el-divider direction="vertical"></el-divider>穿搭<i class="el-icon-arrow-right"></i>
                   </span>
-                  <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                  <el-menu   class="el-menu-demo" mode="vertical">
                     <el-menu-item index="1">外套</el-menu-item>
                   </el-menu>
                 </el-popover>
@@ -60,7 +60,7 @@
                   <span slot="reference">
                     运动<el-divider direction="vertical"></el-divider>户外<el-divider direction="vertical"></el-divider>乐器<i class="el-icon-arrow-right"></i>
                   </span>
-                  <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                  <el-menu   class="el-menu-demo" mode="vertical">
                     <el-menu-item index="1">跑鞋</el-menu-item>
                   </el-menu>
                 </el-popover>
@@ -72,7 +72,7 @@
                   <span slot="reference">
                     家具<el-divider direction="vertical"></el-divider>家饰<el-divider direction="vertical"></el-divider>家纺<i class="el-icon-arrow-right"></i>
                   </span>
-                  <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                  <el-menu   class="el-menu-demo" mode="vertical">
                     <el-menu-item index="1">沙发</el-menu-item>
                   </el-menu>
                 </el-popover>
@@ -84,7 +84,7 @@
                   <span slot="reference">
                     游戏<el-divider direction="vertical"></el-divider>动漫<el-divider direction="vertical"></el-divider>影视<i class="el-icon-arrow-right"></i>
                   </span>
-                  <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                  <el-menu  class="el-menu-demo" mode="vertical">
                     <el-menu-item index="1">LOL</el-menu-item>
                   </el-menu>
                 </el-popover>
@@ -96,7 +96,7 @@
                   <span slot="reference">
                     美妆<el-divider direction="vertical"></el-divider>清洁<el-divider direction="vertical"></el-divider>宠物<i class="el-icon-arrow-right"></i>
                   </span>
-                  <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                  <el-menu   class="el-menu-demo" mode="vertical">
                     <el-menu-item index="1">口红</el-menu-item>
                     <el-menu-item index="2">睫毛膏</el-menu-item>
                     <el-menu-item index="3">腮红</el-menu-item>
@@ -114,7 +114,7 @@
                   <span slot="reference">
                     工具<el-divider direction="vertical"></el-divider>装修<el-divider direction="vertical"></el-divider>建材<i class="el-icon-arrow-right"></i>
                   </span>
-                  <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                  <el-menu   class="el-menu-demo" mode="vertical">
                     <el-menu-item index="1">转换器</el-menu-item>
                   </el-menu>
                 </el-popover>
@@ -126,7 +126,7 @@
                   <span slot="reference">
                     鞋靴<el-divider direction="vertical"></el-divider>箱包<el-divider direction="vertical"></el-divider>配件<i class="el-icon-arrow-right"></i>
                   </span>
-                  <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                  <el-menu   class="el-menu-demo" mode="vertical">
                     <el-menu-item index="1">休闲鞋</el-menu-item>
                   </el-menu>
                 </el-popover>
@@ -138,7 +138,7 @@
                   <span slot="reference">
                     玩具<el-divider direction="vertical"></el-divider>孕产<el-divider direction="vertical"></el-divider>用品<i class="el-icon-arrow-right"></i>
                   </span>
-                  <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                  <el-menu   class="el-menu-demo" mode="vertical">
                     <el-menu-item index="1">机器人</el-menu-item>
                   </el-menu>
                 </el-popover>
@@ -226,7 +226,10 @@ export default {
   methods:{
     goToDetail(item) {
       this.$router.push({ path: `product`,query:{id:item.goodsId} })
-    }
+    },
+    goTo() {
+      this.$router.push({ path: '/cart' })
+    },
   }
 }
 </script>

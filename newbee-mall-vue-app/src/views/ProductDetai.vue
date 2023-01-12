@@ -6,14 +6,14 @@
       <div class="search_and_cart">
         <div class="wide">
           <div class="logo" style="float: left"><img style="width: 100%" src="https://img10.360buyimg.com/img/jfs/t1/50166/9/22920/11310/63a1993cE3800216e/105f3d456f0905bb.jpg"></div>
-          <div style="float:left;width: 680px;margin-top: 9px;margin-left: 92px;"><el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
+          <div style="float:left;width: 680px;margin-top: 9px;margin-left: 92px;"><el-menu class="el-menu-demo" mode="horizontal">
             <el-menu-item index="1">
               <el-popover
                 trigger="hover">
                   <span slot="reference">
                     家电<el-divider direction="vertical"></el-divider>数码<el-divider direction="vertical"></el-divider>手机
                   </span>
-                <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                <el-menu  class="el-menu-demo" mode="vertical">
                   <el-menu-item index="1">生活电器</el-menu-item>
                   <el-menu-item index="2">wer</el-menu-item>
                   <el-menu-item index="3">厨房神器</el-menu-item>
@@ -37,7 +37,7 @@
                   <span slot="reference">
                     女装<el-divider direction="vertical"></el-divider>男装<el-divider direction="vertical"></el-divider>穿搭
                   </span>
-                <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                <el-menu  class="el-menu-demo" mode="vertical">
                   <el-menu-item index="1">外套</el-menu-item>
                 </el-menu>
               </el-popover>
@@ -49,7 +49,7 @@
                   <span slot="reference">
                     运动<el-divider direction="vertical"></el-divider>户外<el-divider direction="vertical"></el-divider>乐器
                   </span>
-                <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                <el-menu  class="el-menu-demo" mode="vertical">
                   <el-menu-item index="1">跑鞋</el-menu-item>
                 </el-menu>
               </el-popover>
@@ -61,7 +61,7 @@
                   <span slot="reference">
                     家具<el-divider direction="vertical"></el-divider>家饰<el-divider direction="vertical"></el-divider>家纺
                   </span>
-                <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                <el-menu  class="el-menu-demo" mode="vertical">
                   <el-menu-item index="1">沙发</el-menu-item>
                 </el-menu>
               </el-popover>
@@ -73,7 +73,7 @@
                   <span slot="reference">
                     游戏<el-divider direction="vertical"></el-divider>动漫<el-divider direction="vertical"></el-divider>影视
                   </span>
-                <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                <el-menu  class="el-menu-demo" mode="vertical">
                   <el-menu-item index="1">LOL</el-menu-item>
                 </el-menu>
               </el-popover>
@@ -85,7 +85,7 @@
                   <span slot="reference">
                     美妆<el-divider direction="vertical"></el-divider>清洁<el-divider direction="vertical"></el-divider>宠物
                   </span>
-                <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                <el-menu  class="el-menu-demo" mode="vertical">
                   <el-menu-item index="1">口红</el-menu-item>
                   <el-menu-item index="2">睫毛膏</el-menu-item>
                   <el-menu-item index="3">腮红</el-menu-item>
@@ -103,7 +103,7 @@
                   <span slot="reference">
                     工具<el-divider direction="vertical"></el-divider>装修<el-divider direction="vertical"></el-divider>建材
                   </span>
-                <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                <el-menu  class="el-menu-demo" mode="vertical">
                   <el-menu-item index="1">转换器</el-menu-item>
                 </el-menu>
               </el-popover>
@@ -115,7 +115,7 @@
                   <span slot="reference">
                     鞋靴<el-divider direction="vertical"></el-divider>箱包<el-divider direction="vertical"></el-divider>配件
                   </span>
-                <el-menu :active-text-color="fff" :default-active="activeIndex" class="el-menu-demo" mode="vertical">
+                <el-menu class="el-menu-demo" mode="vertical">
                   <el-menu-item index="1">休闲鞋</el-menu-item>
                 </el-menu>
               </el-popover>
@@ -143,8 +143,8 @@
               <el-descriptions-item label="原价"><p><del>¥{{this.detail.originalPrice}}</del></p></el-descriptions-item>
               <el-descriptions-item label="标签"><p><el-tag>{{ this.detail.tag }}</el-tag></p></el-descriptions-item>
               <el-descriptions-item label="选择数量"><p><el-input-number v-model="num" :min="1" ></el-input-number></p></el-descriptions-item>
-              <el-descriptions-item label="直接购买"><p><el-button type="primary">直接购买</el-button></p></el-descriptions-item>
-              <el-descriptions-item label="加入购物车"><p><el-button type="primary">加入购物车</el-button></p></el-descriptions-item>
+              <el-descriptions-item label="直接购买"><p><el-button @click="goToCart" type="primary">直接购买</el-button></p></el-descriptions-item>
+              <el-descriptions-item label="加入购物车"><p><el-button @click="addCart" type="primary">加入购物车</el-button></p></el-descriptions-item>
             </el-descriptions>
           </div>
           <div class="wide" v-if="detail.goodsDetailContent!=''" style="float:left;margin-top:15px;margin-bottom: 15px" ><el-divider style="background-color:#f4f4f4;"><h3 style="font-size: 25px">商品详情</h3></el-divider></div>
@@ -163,6 +163,8 @@
 <script>
 import TopNavigator from "@/components/TopNavigator";
 import {getDetail} from "@/service/good";
+import {addCart} from "@/service/cart";
+import {Toast} from "vant";
 
 export default {
   name: "ProductDetai",
@@ -176,11 +178,24 @@ export default {
     }
   },
   async mounted() {
+    this.detail.goodsDetailContent=''
     const { id } = this.$router.currentRoute.query
     const { data } = await getDetail(id)
     console.log(data)
     this.detail = data
   },
+  methods:{
+    async addCart() {
+      const { data, resultCode } = await addCart({ goodsCount: 1, goodsId: this.detail.goodsId })
+      if (resultCode == 200 ) Toast.success('添加成功')
+      this.$store.dispatch('updateCart')
+    },
+    async goToCart() {
+      const { data, resultCode } = await addCart({ goodsCount: 1, goodsId: this.detail.goodsId })
+      this.$store.dispatch('updateCart')
+      this.$router.push({ path: '/cart' })
+    }
+  }
 
 }
 </script>
