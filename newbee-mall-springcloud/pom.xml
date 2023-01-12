@@ -14,10 +14,10 @@
     <description>新蜂商城微服务版本(Spring Cloud Alibaba)</description>
 
     <modules>
-        <module>newbee-mall-cloud-order-service</module>
-        <module>newbee-mall-cloud-shop-cart-service</module>
+        <module>mall-cloud-order-service</module>
+        <module>mall-cloud-shop-cart-service</module>
         <module>newbee-mall-cloud-recommend-service</module>
-        <module>newbee-mall-cloud-goods-service</module>
+        <module>mall-cloud-goods-service</module>
         <module>newbee-mall-cloud-user-service</module>
         <module>newbee-mall-cloud-gateway-mall</module>
         <module>newbee-mall-cloud-gateway-admin</module>
