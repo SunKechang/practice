@@ -122,8 +122,6 @@ public class NewBeeMallCloudPersonalController {
         NewBeeMallUserVO mallUserVO = new NewBeeMallUserVO();
         MallUser userDetailByToken = newBeeMallUserService.getUserDetailByToken(loginMallUserToken.getToken());
         BeanUtil.copyProperties(userDetailByToken, mallUserVO);
-        System.out.print("获得个人信息---");
-        System.out.println(mallUserVO);
         return ResultGenerator.genSuccessResult(mallUserVO);
     }
 
@@ -161,7 +159,8 @@ public class NewBeeMallCloudPersonalController {
      * @return
      */
     @PostMapping("/code")
-    public String sendCode(String phone){
+    public String sendCode(@RequestBody String phone){
+        System.out.println(phone);
         Random random = new Random();
         int res = 1000+random.nextInt(9000);
         String code=Integer.toString(res);

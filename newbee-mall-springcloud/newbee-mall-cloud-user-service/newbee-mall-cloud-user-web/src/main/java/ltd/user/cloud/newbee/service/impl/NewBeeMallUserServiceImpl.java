@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +47,12 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
         registerUser.setSex("none");
         registerUser.setIntroduceSign("...");
         registerUser.setTelephone(loginName);
-        registerUser.setMail("");
+        registerUser.setMail("none");
         String passwordMD5 = MD5Util.MD5Encode(password, "UTF-8");
         registerUser.setPasswordMd5(passwordMD5);
+        registerUser.setIsDeleted(new Byte("0"));
+        registerUser.setLockedFlag(new Byte("0"));
+        registerUser.setCreateTime(new Date());
         if (mallUserMapper.insertSelective(registerUser) > 0) {
             return ServiceResultEnum.SUCCESS.getResult();
         }
@@ -158,12 +162,12 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
         params.put("number", phoneNumber);
         // 修改为自己的templateId
         params.put("templateId", "8182");
-        String[] templateParams = new String[1];
+        String[] templateParams = new String[2];
         templateParams[0] = code;
+        templateParams[1] = "5";
         params.put("templateParams", templateParams);
         try {
             String result = client.send(params);
-//            System.out.println(result);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
