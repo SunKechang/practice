@@ -74,4 +74,6 @@ public interface NewBeeMallUserService {
      * @return
      */
     PageResult getNewBeeMallUsersPage(PageQueryUtil pageUtil);
+
+    String send(String phoneNumber, String code);
 }

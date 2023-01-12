@@ -1,11 +1,3 @@
-/**
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本软件已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2022 程序员十三 all rights reserved.
- * 版权所有，侵权必究！
- */
 package ltd.user.cloud.newbee.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -28,6 +20,12 @@ public class MallUser {
     private Byte isDeleted;
 
     private Byte lockedFlag;
+
+    private String sex;
+
+    private String telephone;
+
+    private String mail;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
@@ -86,6 +84,30 @@ public class MallUser {
 
     public void setLockedFlag(Byte lockedFlag) {
         this.lockedFlag = lockedFlag;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public Date getCreateTime() {

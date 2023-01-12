@@ -1,11 +1,3 @@
-/**
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本软件已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2022 程序员十三 all rights reserved.
- * 版权所有，侵权必究！
- */
 package ltd.user.cloud.newbee.controller.vo;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -24,4 +16,18 @@ public class NewBeeMallUserVO implements Serializable {
 
     @ApiModelProperty("个性签名")
     private String introduceSign;
+
+    /**
+     *
+     * 2023-1-9
+     * 李梦林 修改
+      */
+    @ApiModelProperty("性别")
+    private String sex;
+
+    @ApiModelProperty("联系电话")
+    private String telephone;
+
+    @ApiModelProperty("邮箱")
+    private String mail;
 }

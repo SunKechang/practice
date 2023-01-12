@@ -1,13 +1,6 @@
-/**
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本软件已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2022 程序员十三 all rights reserved.
- * 版权所有，侵权必究！
- */
 package ltd.user.cloud.newbee.service.impl;
 
+import com.zhenzi.sms.ZhenziSmsClient;
 import ltd.common.cloud.newbee.enums.ServiceResultEnum;
 import ltd.common.cloud.newbee.dto.PageQueryUtil;
 import ltd.common.cloud.newbee.dto.PageResult;
@@ -25,9 +18,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author 22729
+ */
 @Service
 public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
 
@@ -45,7 +43,10 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
         MallUser registerUser = new MallUser();
         registerUser.setLoginName(loginName);
         registerUser.setNickName(loginName);
-        registerUser.setIntroduceSign("随新所欲，蜂富多彩");
+        registerUser.setSex("none");
+        registerUser.setIntroduceSign("...");
+        registerUser.setTelephone(loginName);
+        registerUser.setMail("");
         String passwordMD5 = MD5Util.MD5Encode(password, "UTF-8");
         registerUser.setPasswordMd5(passwordMD5);
         if (mallUserMapper.insertSelective(registerUser) > 0) {
@@ -66,6 +67,7 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
             MallUserToken mallUserToken = new MallUserToken();
             mallUserToken.setUserId(user.getUserId());
             mallUserToken.setToken(token);
+            // 操作redis字符串
             ValueOperations<String, MallUserToken> setToken = redisTemplate.opsForValue();
             setToken.set(token, mallUserToken, 7 * 24 * 60 * 60, TimeUnit.SECONDS);//过期时间7天
             return token;
@@ -94,9 +96,13 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
         }
         user.setNickName(mallUser.getNickName());
         //若密码为空字符，则表明用户不打算修改密码，使用原密码保存
-        if (!MD5Util.MD5Encode("", "UTF-8").equals(mallUser.getPasswordMd5())) {
-            user.setPasswordMd5(mallUser.getPasswordMd5());
-        }
+//        if (!MD5Util.MD5Encode("", "UTF-8").equals(mallUser.getPasswordMd5())) {
+//            user.setPasswordMd5(mallUser.getPasswordMd5());
+//        }
+//        System.out.println(mallUser.getSex());
+        user.setMail(mallUser.getMail());
+        user.setSex(mallUser.getSex());
+        user.setTelephone(mallUser.getTelephone());
         user.setIntroduceSign(mallUser.getIntroduceSign());
         if (mallUserMapper.updateByPrimaryKeySelective(user) > 0) {
             return true;
@@ -142,5 +148,26 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
             return false;
         }
         return mallUserMapper.lockUserBatch(ids, lockStatus) > 0;
+    }
+
+    @Override
+    public String send(String phoneNumber, String code){
+        // 使用自己的 AppId 和 AppSecret
+        ZhenziSmsClient client = new ZhenziSmsClient("https://sms_developer.zhenzikj.com", "110913", "14d24011-9542-4cf4-a3a3-16aa541284ce");
+        Map<String, Object> params = new HashMap<>();
+        params.put("number", phoneNumber);
+        // 修改为自己的templateId
+        params.put("templateId", "8182");
+        String[] templateParams = new String[1];
+        templateParams[0] = code;
+        params.put("templateParams", templateParams);
+        try {
+            String result = client.send(params);
+//            System.out.println(result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "kong";
     }
 }

@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--  @author 程序员十三
-      @qq交流群 791509631
-      @email 2449207463@qq.com
-      @link https://github.com/newbee-ltd -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -39,6 +35,24 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--qq邮件发送所需依赖-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-mail</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>1.4.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.zhenzikj</groupId>
+                <artifactId>zhenzisms</artifactId>
+                <version>2.0.2</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -96,6 +110,26 @@
 
         </dependencies>
     </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zhenzikj</groupId>
+            <artifactId>zhenzisms</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -112,7 +146,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>                
+                <version>${spring.boot.version}</version>
             </plugin>
         </plugins>
     </build>
@@ -123,10 +157,11 @@
             <url>https://maven.aliyun.com/repository/central</url>
             <name>aliyun</name>
         </repository>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
     </repositories>
 
-    <!--  @author 程序员十三
-      @qq交流群 791509631
-      @email 2449207463@qq.com
-      @link https://github.com/newbee-ltd -->
 </project>

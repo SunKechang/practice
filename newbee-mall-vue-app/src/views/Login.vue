@@ -1,13 +1,12 @@
 <template>
   <div class="login">
-    <!--    <s-header :name="ruleForm.type === 'login' ? '登录' : '注册'" :back="'/home'"></s-header>-->
     <div v-if="type === 'login'" class="login-body login">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="ruleForm.username"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+          <el-input type="password" v-model="ruleForm.password" autocomplete="off"  show-password="true"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="text" @click="toRegister()">注册</el-button>
@@ -80,8 +79,17 @@ export default {
           "loginName": this.ruleForm.username,
           "passwordMd5": this.$md5(this.ruleForm.password)
         })
-        setLocal('token', data)
-        window.location.href = '/'
+        // console.log(data,resultCode)
+        if(resultCode==='500'){
+          this.$message({
+            message: '账号或密码错误,请重新输入',
+            type: 'error'
+          });
+        }
+        else{
+          setLocal('token', data)
+          window.location.href = '/'
+        }
       } else {
         const { data } = await register({
           "loginName": this.regForm.username,
@@ -94,14 +102,14 @@ export default {
         this.type = 'login'
       }
     },
-    success(obj) {
-      this.verify = true
-      obj.refresh()
-    },
-    error(obj) {
-      this.verify = false
-      obj.refresh()
-    }
+    // success(obj) {
+    //   this.verify = true
+    //   obj.refresh()
+    // },
+    // error(obj) {
+    //   this.verify = false
+    //   obj.refresh()
+    // }
   },
 }
 </script>
