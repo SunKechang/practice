@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.recommend.cloud.newbee.dao.BrowseMapper">
+    <resultMap id="BaseResultMap" type="ltd.recommend.cloud.newbee.entity.Browse">
+        <id column="browse_id" jdbcType="INTEGER" property="browseId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="ltd.recommend.cloud.newbee.entity.Browse">
+        insert into tb_newbee_mall_browse (browse_id, user_id, category_id)
+        values (#{browseId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}
+               )
+    </insert>
+
+    <select id="getByUserId" parameterType="long" resultMap="BaseResultMap">
+        select * from tb_newbee_mall_browse
+        where user_id = #{userId}
+        order by browse_id DESC
+        limit 100
+    </select>
+
+</mapper>

@@ -1,11 +1,4 @@
-/**
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本软件已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2022 程序员十三 all rights reserved.
- * 版权所有，侵权必究！
- */
+
 package ltd.goods.cloud.newbee.config.handler;
 
 import ltd.common.cloud.newbee.enums.ServiceResultEnum;
@@ -14,7 +7,7 @@ import ltd.common.cloud.newbee.exception.NewBeeMallException;
 import ltd.common.cloud.newbee.pojo.MallUserToken;
 import ltd.goods.cloud.newbee.config.annotation.TokenToMallUser;
 import ltd.user.cloud.newbee.dto.MallUserDTO;
-import ltd.user.cloud.newbee.openfeign.NewBeeCloudUserServiceFeign;
+import ltd.user.cloud.newbee.openfeign.CloudUserServiceFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -27,7 +20,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class TokenToMallUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
-    private NewBeeCloudUserServiceFeign newBeeCloudUserService;
+    private CloudUserServiceFeign newBeeCloudUserService;
 
     public TokenToMallUserMethodArgumentResolver() {
     }

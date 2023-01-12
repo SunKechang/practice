@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ltd.newbee.cloud</groupId>
+    <artifactId>newbee-mall-cloud-recommend-service</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>newbee-mall-cloud-recommend-service</name>
+    <description>推荐模块</description>
+
+    <parent>
+        <groupId>ltd.newbee.cloud</groupId>
+        <artifactId>newbee-mall-cloud</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <modules>
+        <module>mall-cloud-recommend-web</module>
+        <module>mall-cloud-recommend-api</module>
+    </modules>
+
+    <dependencies>
+
+    </dependencies>
+</project>

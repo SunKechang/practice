@@ -12,10 +12,10 @@
     <modules>
         <module>mall-cloud-order-service</module>
         <module>mall-cloud-shop-cart-service</module>
-        <module>newbee-mall-cloud-recommend-service</module>
+        <module>mall-cloud-recommend-service</module>
         <module>mall-cloud-goods-service</module>
-        <module>newbee-mall-cloud-user-service</module>
-        <module>newbee-mall-cloud-gateway-mall</module>
+        <module>mall-cloud-user-service</module>
+        <module>mall-cloud-gateway-mall</module>
         <module>newbee-mall-cloud-gateway-admin</module>
         <module>newbee-mall-cloud-common</module>
     </modules>
