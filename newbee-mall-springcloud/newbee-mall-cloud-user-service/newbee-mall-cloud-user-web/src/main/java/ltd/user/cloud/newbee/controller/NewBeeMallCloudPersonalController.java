@@ -1,5 +1,7 @@
 package ltd.user.cloud.newbee.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -16,12 +18,10 @@ import ltd.user.cloud.newbee.controller.param.MallUserUpdateParam;
 import ltd.user.cloud.newbee.controller.vo.NewBeeMallUserVO;
 import ltd.user.cloud.newbee.entity.MallUser;
 //import ltd.user.cloud.newbee.service.CodeService;
-import ltd.user.cloud.newbee.service.MailService;
 import ltd.user.cloud.newbee.service.NewBeeMallUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,10 +38,6 @@ public class NewBeeMallCloudPersonalController {
 
     @Resource
     private NewBeeMallUserService newBeeMallUserService;
-
-
-    @Autowired
-    private MailService mailService;
 
     private static final Logger logger = LoggerFactory.getLogger(NewBeeMallCloudPersonalController.class);
 
@@ -136,34 +132,36 @@ public class NewBeeMallCloudPersonalController {
         return ResultGenerator.genFailResult("无此用户数据");
     }
 
-
-    @GetMapping("/simple")
-    public Map<String, Object> sendSimpleMail() {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            //参数就是接收邮件的邮箱，根据自己实际填写
-            System.out.println("测试发送");
-            mailService.simpleMail("1750359399@qq.com");
-            System.out.println("测试是否发送");
-            map.put("res", "success");
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            map.put("res", "error");
-        }
-        return map;
-    }
-
     /**
      * 发送手机验证码
-     * @return
      */
     @PostMapping("/code")
-    public String sendCode(@RequestBody String phone){
-        System.out.println(phone);
+    public Result sendCode(@RequestBody String phone){
+//        System.out.println(phone);
         Random random = new Random();
         int res = 1000+random.nextInt(9000);
         String code=Integer.toString(res);
-        return newBeeMallUserService.send(phone,code);
+        String a=newBeeMallUserService.send(phone,code);
+        Result result = ResultGenerator.genSuccessResult();
+        result.setData(a);
+        return result;
+    }
+
+    /**
+     * 改密码
+     */
+    @PostMapping("/changePwd")
+    public Result changePwd(@RequestBody String pwd,@TokenToMallUser MallUserToken mallUserToken){
+        Boolean flag = newBeeMallUserService.changePwd(pwd, mallUserToken.getUserId());
+        Result result;
+        if (flag) {
+            //返回成功
+            result = ResultGenerator.genSuccessResult();
+            result.setData("success");
+        } else {
+            //返回失败
+            result = ResultGenerator.genFailResult("密码必须为新密码");
+        }
+        return result;
     }
 }

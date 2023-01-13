@@ -1,11 +1,15 @@
 
 package ltd.user.cloud.newbee.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import ltd.common.cloud.newbee.dto.PageQueryUtil;
 import ltd.common.cloud.newbee.dto.PageResult;
 import ltd.user.cloud.newbee.controller.param.MallUserUpdateParam;
 import ltd.user.cloud.newbee.entity.AdminUser;
 import ltd.user.cloud.newbee.entity.MallUser;
+
+import java.util.Map;
 
 public interface NewBeeMallUserService {
 
@@ -69,4 +73,11 @@ public interface NewBeeMallUserService {
     PageResult getNewBeeMallUsersPage(PageQueryUtil pageUtil);
 
     String send(String phoneNumber, String code);
+
+    /**
+     * 改密码
+     * @param pwd
+     * @return
+     */
+    Boolean changePwd(String pwd,Long userId);
 }

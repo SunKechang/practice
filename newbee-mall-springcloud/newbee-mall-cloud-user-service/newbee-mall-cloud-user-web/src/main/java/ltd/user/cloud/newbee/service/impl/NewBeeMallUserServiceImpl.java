@@ -20,10 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -171,12 +168,30 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
         try {
             String result = client.send(params);
             JSONObject jsonObject= JSON.parseObject(result);
-            jsonObject.put("phoneCode",code);
-            String end=JSON.toJSONString(jsonObject);
-            return end;
+            if(((Integer) jsonObject.get("code")) ==0){
+                return code;
+            }else{
+                return "0";
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "kong";
+        return "0";
+    }
+
+    public Boolean changePwd(String pwd,Long userId){
+        MallUser user = mallUserMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            NewBeeMallException.fail(ServiceResultEnum.DATA_NOT_EXIST.getResult());
+        }
+        if(Objects.equals(pwd, user.getPasswordMd5())){
+            return false;
+        }else{
+            user.setPasswordMd5(pwd);
+            if (mallUserMapper.updateByPrimaryKeySelective(user) > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }
