@@ -6,7 +6,7 @@
           <el-input v-model="ruleForm.username"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="ruleForm.password" autocomplete="off"  show-password=true></el-input>
+          <el-input type="password" v-model="ruleForm.password" autocomplete="off"  show-password></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="text" @click="toRegister()">注册</el-button>
@@ -19,17 +19,21 @@
 
     <div v-else class="login-body register">
       <el-form :model="regForm" :rules="rules" ref="regRef" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="用户名" prop="username">
+        <el-form-item label="手机号" prop="username">
           <el-input v-model="regForm.username"></el-input>
         </el-form-item>
+        <el-form-item label="验证码" prop="code">
+          <el-input v-model="regForm.code"></el-input>
+        </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="regForm.password" autocomplete="off"></el-input>
+          <el-input type="password" v-model="regForm.password" autocomplete="off" show-password></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="text" @click="toLogin()">已有登录账号</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">提交</el-button>
+          <el-button type="primary" @click="getCode">获取验证码</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -39,10 +43,12 @@
 <script>
 import { login, register, getUserInfo } from '../service/user'
 import { setLocal, getLocal } from '@/common/js/utils'
+import axios from "../utils/axios";
 export default {
   data() {
     return {
       type: 'login',
+      code:'',
       ruleForm: {
         username: '',
         password: '',
@@ -53,12 +59,17 @@ export default {
       regForm:{
         username: '',
         password: '',
+        code:'',
       },
       rules:
         {
           username: [
-            { required:true,message:'请输入用户名',trigger: 'blur'}
+            { required:true,message:'请输入手机号',trigger: 'blur'},
+            { pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: "请输入合法手机号", trigger: "blur" }
           ],
+          code:[{
+            required:true,message:'请输入验证码', trigger: 'blur'
+          }],
           password: [
             { required:true,message:'请输入密码', trigger: 'blur'}
           ]
@@ -88,29 +99,38 @@ export default {
         }
         else{
           setLocal('token', data)
-          window.location.href = '/'
+          await this.$router.push('/hom')
+          // window.location.href = '/'
         }
       } else {
-        const { data } = await register({
-          "loginName": this.regForm.username,
-          "password": this.regForm.password
-        })
-        this.$message({
-          message: '注册成功',
-          type: 'success'
-        });
-        this.type = 'login'
-        console.log(data)
+        if(this.code===this.regForm.code){
+          const { data } = await register({
+            "loginName": this.regForm.username,
+            "password": this.regForm.password
+          })
+          this.$message({
+            message: '注册成功',
+            type: 'success'
+          });
+          this.type = 'login'
+          // console.log(data)
+        }else{
+          this.$message({
+            message: '验证码输入错误',
+            type: 'error'
+          });
+        }
       }
     },
-    // success(obj) {
-    //   this.verify = true
-    //   obj.refresh()
-    // },
-    // error(obj) {
-    //   this.verify = false
-    //   obj.refresh()
-    // }
+    async getCode(){
+      let phone=this.regForm.username
+      const {data}=await axios.post('/users/mall/code',phone)
+      this.$message({
+        message: '验证码已发送',
+        type: 'success'
+      });
+      this.code=data;
+    }
   },
 }
 </script>

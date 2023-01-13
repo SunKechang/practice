@@ -17,7 +17,7 @@
             <el-menu-item index="2">
               <span slot="title">账户安全</span>
             </el-menu-item>
-            <el-menu-item index="3">
+            <el-menu-item index="Address" >
               <span slot="title">收货地址</span>
             </el-menu-item>
           </el-menu>
@@ -60,24 +60,21 @@
           <!-- 密码 -->
           <el-divider content-position="left">密码修改</el-divider>
           <div style="margin-top: 30px;width: 300px">
-            <el-form ref="pwdRef" :model="pwdForm" label-width="80px">
-              <el-form-item label="旧密码" prop="oldPwd">
-                <el-input v-model="pwdForm.oldPwd" placeholder="请输入旧密码" show-password=true></el-input>
+            <el-form ref="pwdForm" :model="pwdForm" label-width="80px" :rules="changePwdRules" status-icon>
+              <el-form-item label="注册电话">
+                <el-input v-model="pwdForm.telephone" disabled=""></el-input>
               </el-form-item>
-              <el-form-item label="注册电话" prop="telephone">
-                <el-input v-model="pwdForm.telephone" placeholder="请输入注册电话"></el-input>
-              </el-form-item>
-              <el-form-item >
+              <el-form-item autocomplete="off">
                 <el-button type="primary" @click="getCode">获取验证码</el-button>
               </el-form-item>
-              <el-form-item label="验证码" prop="code">
+              <el-form-item label="验证码" prop="code" autocomplete="off">
                 <el-input v-model="pwdForm.code" placeholder="请输入验证码"></el-input>
               </el-form-item>
-              <el-form-item label="新密码" prop="newPwd">
-                <el-input v-model="pwdForm.newPwd" placeholder="请输入新密码" show-password=true></el-input>
+              <el-form-item label="新密码" prop="newPwd" autocomplete="off" >
+                <el-input type="password" v-model="pwdForm.newPwd" placeholder="请输入新密码" show-password></el-input>
               </el-form-item>
-              <el-form-item label="确认" prop="newPwd2">
-                <el-input v-model="pwdForm.newPwd2" placeholder="再次输入新密码" show-password=true></el-input>
+              <el-form-item label="确认" prop="newPwd2" autocomplete="off" >
+                <el-input type="password" v-model="pwdForm.newPwd2" placeholder="再次输入新密码" show-password></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="changePwd">提交</el-button>
@@ -86,6 +83,10 @@
           </div>
         </div>
 
+<!--        <div v-else>-->
+<!--          -->
+<!--        </div>-->
+
       </el-main>
     </el-container>
 
@@ -93,17 +94,39 @@
 </template>
 
 <script>
-import {EditUserInfo, getUserInfo} from '../service/user'
+import {EditUserInfo, getUserInfo, logout} from '../service/user'
 import TopNavigator from '@/components/TopNavigator'
 import axios from "../utils/axios";
+import {setLocal} from "../common/js/utils";
+import {getAddressList} from "../service/address";
 export default {
   components: {
     TopNavigator
   },
   data() {
+    let validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        if (this.pwdForm.newPwd2 !== '') {
+          this.$refs.pwdForm.validateField('newPwd2');
+        }
+        callback();
+      }
+    };
+    let validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.pwdForm.newPwd) {
+        callback(new Error('两次输入密码不一致!'));
+      } else {
+        callback();
+      }
+    };
     return {
       index:'1',
       user:{},
+      code:'',
       myInfoForm: {
         nickName: '',
         // 账号
@@ -114,21 +137,29 @@ export default {
         mail:'',
       },
       pwdForm:{
-        oldPwd:'',
         telephone:'',
         code:'',
         newPwd:'',
         newPwd2:''
-      }
+      },
+      changePwdRules:{
+        // telephone: [
+        //   { required: true, message: "请输入手机号", trigger: "blur" },
+        //   { pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: "请输入合法手机号", trigger: "blur" }
+        // ],
+        newPwd:[{validator:validatePass,trigger:'blur'}],
+        newPwd2:[{validator:validatePass2,trigger:'blur'}]
+      },
     }
   },
   // 获取用户信息
   async mounted() {
     const { data } = await getUserInfo()
     this.myInfoForm = data;
-    // console.log(data)
+    this.pwdForm.telephone=this.myInfoForm.telephone;
   },
   methods: {
+
     async changeInfo(){
       const params = {
         introduceSign: this.myInfoForm.introduceSign,
@@ -146,16 +177,39 @@ export default {
       });
       location.reload();
     },
-    changePwd(){
-
+    async changePwd(){
+      if(this.pwdForm.code!==this.code){
+        this.$message({
+          message:'验证码错误',
+          type: 'error'
+        });
+      }else{
+        let pwd=this.$md5(this.pwdForm.newPwd)
+        const { data } =await axios.post('/users/mall/changePwd',pwd);
+        // console.log(data);
+        if(data==="success"){
+          this.$message({
+            message:'修改成功,请重新登录!',
+            type:'success'
+          });
+          const { resultCode } = await logout()
+          if (resultCode === 200) {
+              setLocal('token', '')
+            await this.$router.push('/login');
+          }
+        }else{
+          this.$message({
+            message:'密码必须为新密码!',
+            type:'error'
+          });
+        }
+      }
     },
-    getCode(){
-      const {data1}=axios.post('/users/mall/code',this.pwdForm.telephone);
-      console.log(data1);
+    async getCode(){
+      const {data}=await axios.post('/users/mall/code',this.pwdForm.telephone)
+      // console.log(data)
+      this.code=data;
     },
-    // goTo(r) {
-    //   this.$router.push({ path: r })
-    // },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -165,87 +219,14 @@ export default {
     handSelect(key, keyPath){
       console.log(key,keyPath)
       this.index=key
+      if(key==='Address'){
+        this.$router.push('/Address');
+      }
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-@import '../common/style/mixin';
 
-
-
-.user-box {
-  .user-info {
-    width: 94%;
-    margin: 10px;
-    height: 115px;
-    background: linear-gradient(90deg, @primary, #51c7c7);
-    box-shadow: 0 2px 5px #269090;
-    border-radius: 6px;
-    margin-top: 50px;
-
-    .info {
-      position: relative;
-      display: flex;
-      width: 100%;
-      height: 100%;
-      padding: 25px 20px;
-      .boxSizing();
-
-      img {
-        .wh(60px, 60px);
-        border-radius: 50%;
-        margin-top: 4px;
-      }
-
-      .user-desc {
-        display: flex;
-        flex-direction: column;
-        margin-left: 10px;
-        line-height: 20px;
-        font-size: 14px;
-        color: #fff;
-
-        span {
-          color: #fff;
-          font-size: 14px;
-          padding: 2px 0;
-        }
-      }
-
-      .account-setting {
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 13px;
-        color: #fff;
-
-        .van-icon-setting-o {
-          font-size: 16px;
-          vertical-align: -3px;
-          margin-right: 4px;
-        }
-      }
-    }
-  }
-
-  .user-list {
-    padding: 0 20px;
-    margin-top: 20px;
-
-    li {
-      height: 40px;
-      line-height: 40px;
-      border-bottom: 1px solid #e9e9e9;
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-
-      .van-icon-arrow {
-        margin-top: 13px;
-      }
-    }
-  }
-}
 </style>
