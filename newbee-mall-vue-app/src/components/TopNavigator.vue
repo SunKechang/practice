@@ -2,9 +2,10 @@
   <div class="top_container">
     <div class="short_cut">
       <div class="wide">
-        <el-menu style="float: right;" router="true" active-text-color="#f58c0c" background-color="#e3e4e5" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-menu style="float: right;" router="true" active-text-color="#f58c0c" background-color="#e3e4e5"  class="el-menu-demo" mode="horizontal" >
           <el-menu-item  index="hom">首页</el-menu-item>
           <el-menu-item  index="user">我的</el-menu-item>
+          <el-menu-item  index="cart">购物车</el-menu-item>
           <el-submenu index="3">
             <template slot="title" index="order">订单管理</template>
             <el-menu-item index="order">全部</el-menu-item>

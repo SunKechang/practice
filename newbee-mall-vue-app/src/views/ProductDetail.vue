@@ -1,5 +1,4 @@
 
-
 <template>
   <div class="product-detail">
     <s-header :name="'商品详情'"></s-header>
@@ -57,8 +56,9 @@ export default {
     sHeader
   },
   async mounted() {
-    const { id } = this.$route.params
+    const { id } = this.$router.currentRoute.query
     const { data } = await getDetail(id)
+    console.log(data)
     this.detail = data
   },
   methods: {
@@ -163,7 +163,7 @@ export default {
         .product-content {
           padding: 0 20px;
           img {
-            width: 100%;
+            width: 1190px;
           }
         }
       }

@@ -44,19 +44,20 @@ public class NewBeeMallIndexController {
 
     @GetMapping("/recommondInfos")
     @ApiOperation(value = "获取首页数据", notes = "轮播图、新品、推荐等")
-    public Result recommondInfos(@TokenToMallUser MallUserToken mallUser) {
+//    @TokenToMallUser MallUserToken mallUser
+    public Result recommondInfos() {
         IndexInfoVO indexInfoVO = new IndexInfoVO();
         List<NewBeeMallIndexCarouselVO> carousels = newBeeMallCarouselService.getCarouselsForIndex(5);
-        List<NewBeeMallIndexConfigGoodsVO> hotGoodses = newBeeMallIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_HOT.getType(), 4);
-        List<NewBeeMallIndexConfigGoodsVO> newGoodses = newBeeMallIndexConfigService.listNewGoods(8);
-//        List<NewBeeMallIndexConfigGoodsVO> recommendGoodses = newBeeMallIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_RECOMMOND.getType(), 10);
-        List<NewBeeMallIndexConfigGoodsVO> recommendGoodses;
+        List<NewBeeMallIndexConfigGoodsVO> hotGoodses = newBeeMallIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_HOT.getType(), 10);
+        List<NewBeeMallIndexConfigGoodsVO> newGoodses = newBeeMallIndexConfigService.listNewGoods(10);
+        List<NewBeeMallIndexConfigGoodsVO> recommendGoodses = newBeeMallIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_RECOMMOND.getType(), 10);
+//        List<NewBeeMallIndexConfigGoodsVO> recommendGoodses;
         //如果用户未登录，则随便推荐
-        if(mallUser == null) {
-            recommendGoodses = browseService.getRecommendGoodsByUserId(0L);
-        } else {    //否则按照用户的浏览记录推荐
-            recommendGoodses = browseService.getRecommendGoodsByUserId(mallUser.getUserId());
-        }
+//        if(mallUser == null) {
+//            recommendGoodses = browseService.getRecommendGoodsByUserId(0L);
+//        } else {    //否则按照用户的浏览记录推荐
+//            recommendGoodses = browseService.getRecommendGoodsByUserId(mallUser.getUserId());
+//        }
         indexInfoVO.setCarousels(carousels);
         indexInfoVO.setHotGoodses(hotGoodses);
         indexInfoVO.setNewGoodses(newGoodses);
