@@ -1,7 +1,11 @@
 
 package ltd.user.cloud.newbee.service;
 
+import ltd.user.cloud.newbee.controller.param.UserListParam;
 import ltd.user.cloud.newbee.entity.AdminUser;
+import ltd.user.cloud.newbee.entity.MallUser;
+
+import java.util.List;
 
 public interface AdminUserService {
 
@@ -56,5 +60,9 @@ public interface AdminUserService {
      */
     Boolean logout(String token);
 
+    UserListParam getMallUsers(int pageNumber, int pageSize );
 
+    String forbid(Long ids[]);
+
+    String open(Long ids[]);
 }

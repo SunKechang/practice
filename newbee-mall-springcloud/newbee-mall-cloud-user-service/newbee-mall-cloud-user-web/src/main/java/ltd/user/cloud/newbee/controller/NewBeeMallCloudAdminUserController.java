@@ -1,4 +1,3 @@
-
 package ltd.user.cloud.newbee.controller;
 
 import io.swagger.annotations.Api;
@@ -9,8 +8,11 @@ import ltd.user.cloud.newbee.config.annotation.TokenToAdminUser;
 import ltd.user.cloud.newbee.controller.param.AdminLoginParam;
 import ltd.user.cloud.newbee.controller.param.UpdateAdminNameParam;
 import ltd.user.cloud.newbee.controller.param.UpdateAdminPasswordParam;
+import ltd.user.cloud.newbee.controller.param.UserListParam;
+import ltd.user.cloud.newbee.dao.MallUserMapper;
 import ltd.user.cloud.newbee.entity.AdminUser;
 import ltd.common.cloud.newbee.pojo.AdminUserToken;
+import ltd.user.cloud.newbee.entity.MallUser;
 import ltd.user.cloud.newbee.service.AdminUserService;
 
 import org.slf4j.Logger;
@@ -20,8 +22,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-@Api(value = "v1", tags = "新蜂商城管理员操作相关接口")
+@Api(value = "v1", tags = "商城管理员操作相关接口")
 @RestController
 public class NewBeeMallCloudAdminUserController {
 
@@ -31,8 +36,9 @@ public class NewBeeMallCloudAdminUserController {
     private AdminUserService adminUserService;
 
     @ApiOperation(value = "登录接口", notes = "返回token")
-    @RequestMapping(value = "/users/admin/login", method = RequestMethod.POST)
+    @PostMapping("/users/admin/login")
     public Result<String> login(@RequestBody @Valid AdminLoginParam adminLoginParam) {
+//        System.out.println(adminLoginParam.getUserName());
         String loginResult = adminUserService.login(adminLoginParam.getUserName(), adminLoginParam.getPasswordMd5());
         logger.info("manage login api,adminName={},loginResult={}", adminLoginParam.getUserName(), loginResult);
 
@@ -43,14 +49,17 @@ public class NewBeeMallCloudAdminUserController {
             return result;
         }
         //登录失败
-        return ResultGenerator.genFailResult(loginResult);
+        Result result=ResultGenerator.genFailResult(loginResult);
+        result.setData("fail");
+        return result;
     }
-
+    //    @RequestMapping(value = "/users/admin/profile", method = RequestMethod.GET)
     @ApiOperation(value = "获取管理员信息接口")
-    @RequestMapping(value = "/users/admin/profile", method = RequestMethod.POST)
+    @GetMapping("/users/admin/profile")
     public Result profile(@TokenToAdminUser AdminUserToken adminUser) {
         logger.info("adminUser:{}", adminUser.toString());
         AdminUser adminUserEntity = adminUserService.getUserDetailById(adminUser.getAdminUserId());
+        System.out.println(adminUser.getAdminUserId());
         if (adminUserEntity != null) {
             adminUserEntity.setLoginPassword("******");
             Result result = ResultGenerator.genSuccessResult();
@@ -104,4 +113,43 @@ public class NewBeeMallCloudAdminUserController {
     }
 
 
+    @ApiOperation(value= "根据当前页和页大小获取一页的用户信息")
+    @GetMapping("/users/admin/getMallUsers")
+    public Result getMallUsers(int pageNumber,int pageSize){
+        UserListParam userListParam = adminUserService.getMallUsers(pageNumber,pageSize);
+        Result result=ResultGenerator.genSuccessResult();
+        result.setData(userListParam);
+        return result;
+    }
+
+    @PutMapping("/users/admin/forbid")
+    public Result forbid(@RequestBody Map<String, Object> map){
+        Object idsObj = map.get("ids");
+        List<Object> idsList = (List<Object>) idsObj;
+        Long[] ids = idsList.stream().map(id -> Long.parseLong(id.toString())).toArray(Long[]::new);
+        String data= adminUserService.forbid(ids);
+        Result result;
+        if(Objects.equals(data, "success")){
+            result=ResultGenerator.genSuccessResult();
+        }else{
+            result=ResultGenerator.genFailResult(data);
+        }
+        result.setData(data);
+        return result;
+    }
+    @PutMapping("/users/admin/open")
+    public Result open(@RequestBody Map<String, Object> map){
+        Object idsObj = map.get("ids");
+        List<Object> idsList = (List<Object>) idsObj;
+        Long[] ids = idsList.stream().map(id -> Long.parseLong(id.toString())).toArray(Long[]::new);
+        String data= adminUserService.open(ids);
+        Result result;
+        if(Objects.equals(data, "success")){
+            result=ResultGenerator.genSuccessResult();
+        }else{
+            result=ResultGenerator.genFailResult(data);
+        }
+        result.setData(data);
+        return result;
+    }
 }

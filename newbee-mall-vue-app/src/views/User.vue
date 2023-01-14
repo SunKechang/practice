@@ -9,26 +9,27 @@
       <!--侧边-->
       <el-aside style="height: 220px; padding-left: 100px" width="300px">
 
-          <h3 style="text-align:center">设置</h3>
-          <el-menu default-active="1" @open="handleOpen" @close="handleClose" @select="handSelect">
-            <el-menu-item index="1">
-              <span slot="title">个人信息</span>
-            </el-menu-item>
-            <el-menu-item index="2">
-              <span slot="title">账户安全</span>
-            </el-menu-item>
-            <el-menu-item index="Address" >
-              <span slot="title">收货地址</span>
-            </el-menu-item>
-          </el-menu>
+        <h3 style="text-align:center">设置</h3>
+        <el-menu default-active="1" @open="handleOpen" @close="handleClose" @select="handSelect">
+          <el-menu-item index="1">
+            <span slot="title">个人信息</span>
+          </el-menu-item>
+          <el-menu-item index="2">
+            <span slot="title">账户安全</span>
+          </el-menu-item>
+          <el-menu-item index="Address">
+            <span slot="title">收货地址</span>
+          </el-menu-item>
+        </el-menu>
 
       </el-aside>
       <!--main-->
       <el-main>
-        <div v-if="this.index==='1'">
+        <div v-if="this.index === '1'">
+          <el-divider content-position="left">个人信息</el-divider>
           <el-form :model="myInfoForm" label-width="100px">
             <el-form-item label="账号">
-              <span>{{myInfoForm.loginName}}</span>
+              <span>{{ myInfoForm.loginName }}</span>
             </el-form-item>
             <el-form-item label="昵称" prop="nickName">
               <el-input v-model="myInfoForm.nickName" style="width: 200px"></el-input>
@@ -49,13 +50,17 @@
             <el-form-item label="个人介绍">
               <el-input type="textarea" v-model="myInfoForm.introduceSign" style="width: 300px"></el-input>
             </el-form-item>
-            <el-form-item >
+            <el-form-item>
               <el-button type="primary" @click="changeInfo">提交</el-button>
             </el-form-item>
           </el-form>
+          <el-divider content-position="left">退出登录</el-divider>
+          <div>
+            <el-button type="danger" @click="logout">退出登录</el-button>
+          </div>
         </div>
         <!-- 账号安全 -->
-        <div v-else-if="this.index==='2'" style="margin-top: 30px;margin-left: 20px">
+        <div v-else-if="this.index === '2'" style="margin-top: 30px;margin-left: 20px">
 
           <!-- 密码 -->
           <el-divider content-position="left">密码修改</el-divider>
@@ -70,10 +75,10 @@
               <el-form-item label="验证码" prop="code" autocomplete="off">
                 <el-input v-model="pwdForm.code" placeholder="请输入验证码"></el-input>
               </el-form-item>
-              <el-form-item label="新密码" prop="newPwd" autocomplete="off" >
+              <el-form-item label="新密码" prop="newPwd" autocomplete="off">
                 <el-input type="password" v-model="pwdForm.newPwd" placeholder="请输入新密码" show-password></el-input>
               </el-form-item>
-              <el-form-item label="确认" prop="newPwd2" autocomplete="off" >
+              <el-form-item label="确认" prop="newPwd2" autocomplete="off">
                 <el-input type="password" v-model="pwdForm.newPwd2" placeholder="再次输入新密码" show-password></el-input>
               </el-form-item>
               <el-form-item>
@@ -83,10 +88,6 @@
           </div>
         </div>
 
-<!--        <div v-else>-->
-<!--          -->
-<!--        </div>-->
-
       </el-main>
     </el-container>
 
@@ -94,11 +95,11 @@
 </template>
 
 <script>
-import {EditUserInfo, getUserInfo, logout} from '../service/user'
+import { EditUserInfo, getUserInfo, logout } from '../service/user'
 import TopNavigator from '@/components/TopNavigator'
 import axios from "../utils/axios";
-import {setLocal} from "../common/js/utils";
-import {getAddressList} from "../service/address";
+import { setLocal } from "../common/js/utils";
+import { getAddressList } from "../service/address";
 export default {
   components: {
     TopNavigator
@@ -124,31 +125,31 @@ export default {
       }
     };
     return {
-      index:'1',
-      user:{},
-      code:'',
+      index: '1',
+      user: {},
+      code: '',
       myInfoForm: {
         nickName: '',
         // 账号
         loginName: '',
         introduceSign: '',
         sex: '',
-        telephone:'',
-        mail:'',
+        telephone: '',
+        mail: '',
       },
-      pwdForm:{
-        telephone:'',
-        code:'',
-        newPwd:'',
-        newPwd2:''
+      pwdForm: {
+        telephone: '',
+        code: '',
+        newPwd: '',
+        newPwd2: ''
       },
-      changePwdRules:{
+      changePwdRules: {
         // telephone: [
         //   { required: true, message: "请输入手机号", trigger: "blur" },
         //   { pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: "请输入合法手机号", trigger: "blur" }
         // ],
-        newPwd:[{validator:validatePass,trigger:'blur'}],
-        newPwd2:[{validator:validatePass2,trigger:'blur'}]
+        newPwd: [{ validator: validatePass, trigger: 'blur' }],
+        newPwd2: [{ validator: validatePass2, trigger: 'blur' }]
       },
     }
   },
@@ -156,11 +157,16 @@ export default {
   async mounted() {
     const { data } = await getUserInfo()
     this.myInfoForm = data;
-    this.pwdForm.telephone=this.myInfoForm.telephone;
+    this.pwdForm.telephone = this.myInfoForm.telephone;
   },
   methods: {
-
-    async changeInfo(){
+    async logout(){
+      const {data}=await logout();
+      console.log(data)
+      setLocal('token', '')
+      await this.$router.push('/login');
+    },
+    async changeInfo() {
       const params = {
         introduceSign: this.myInfoForm.introduceSign,
         nickName: this.myInfoForm.nickName,
@@ -177,38 +183,38 @@ export default {
       });
       location.reload();
     },
-    async changePwd(){
-      if(this.pwdForm.code!==this.code){
+    async changePwd() {
+      if (this.pwdForm.code !== this.code) {
         this.$message({
-          message:'验证码错误',
+          message: '验证码错误',
           type: 'error'
         });
-      }else{
-        let pwd=this.$md5(this.pwdForm.newPwd)
-        const { data } =await axios.post('/users/mall/changePwd',pwd);
+      } else {
+        let pwd = this.$md5(this.pwdForm.newPwd)
+        const { data } = await axios.post('/users/mall/changePwd', pwd);
         // console.log(data);
-        if(data==="success"){
+        if (data === "success") {
           this.$message({
-            message:'修改成功,请重新登录!',
-            type:'success'
+            message: '修改成功,请重新登录!',
+            type: 'success'
           });
           const { resultCode } = await logout()
           if (resultCode === 200) {
-              setLocal('token', '')
+            setLocal('token', '')
             await this.$router.push('/login');
           }
-        }else{
+        } else {
           this.$message({
-            message:'密码必须为新密码!',
-            type:'error'
+            message: '密码必须为新密码!',
+            type: 'error'
           });
         }
       }
     },
-    async getCode(){
-      const {data}=await axios.post('/users/mall/code',this.pwdForm.telephone)
+    async getCode() {
+      const { data } = await axios.post('/users/mall/code', this.pwdForm.telephone)
       // console.log(data)
-      this.code=data;
+      this.code = data;
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -216,10 +222,10 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-    handSelect(key, keyPath){
-      console.log(key,keyPath)
-      this.index=key
-      if(key==='Address'){
+    handSelect(key, keyPath) {
+      console.log(key, keyPath)
+      this.index = key
+      if (key === 'Address') {
         this.$router.push('/Address');
       }
     }

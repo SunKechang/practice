@@ -65,17 +65,22 @@ public class NewBeeMallCloudPersonalController {
 
     @PostMapping("/logout")
     @ApiOperation(value = "登出接口", notes = "清除token")
-    public Result<String> logout(@TokenToMallUser MallUserToken loginMallUserToken) {
+    public Result logout(@TokenToMallUser MallUserToken loginMallUserToken) {
         Boolean logoutResult = newBeeMallUserService.logout(loginMallUserToken.getToken());
 
         logger.info("logout api,loginMallUser={}", loginMallUserToken.getUserId());
 
+        Result result;
         //登出成功
         if (logoutResult) {
-            return ResultGenerator.genSuccessResult();
+            result=ResultGenerator.genSuccessResult();
+            result.setData("success");
+            return result;
         }
         //登出失败
-        return ResultGenerator.genFailResult("logout error");
+        result=ResultGenerator.genFailResult("logout error");
+        result.setData("fail");
+        return result;
     }
 
 

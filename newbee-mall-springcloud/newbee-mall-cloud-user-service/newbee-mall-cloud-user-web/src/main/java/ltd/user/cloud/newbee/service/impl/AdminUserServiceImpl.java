@@ -1,11 +1,15 @@
 
 package ltd.user.cloud.newbee.service.impl;
 
+import ltd.common.cloud.newbee.dto.PageQueryUtil;
 import ltd.common.cloud.newbee.util.NumberUtil;
 import ltd.common.cloud.newbee.util.SystemUtil;
+import ltd.user.cloud.newbee.controller.param.UserListParam;
 import ltd.user.cloud.newbee.dao.AdminUserMapper;
+import ltd.user.cloud.newbee.dao.MallUserMapper;
 import ltd.user.cloud.newbee.entity.AdminUser;
 import ltd.common.cloud.newbee.pojo.AdminUserToken;
+import ltd.user.cloud.newbee.entity.MallUser;
 import ltd.user.cloud.newbee.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,6 +17,10 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -20,6 +28,9 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Resource
     private AdminUserMapper adminUserMapper;
+
+    @Resource
+    private MallUserMapper mallUserMapper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -107,5 +118,37 @@ public class AdminUserServiceImpl implements AdminUserService {
     public Boolean logout(String token) {
         redisTemplate.delete(token);
         return true;
+    }
+
+    @Override
+    public UserListParam getMallUsers(int pageNumber, int pageSize){
+        UserListParam userListParam=new UserListParam();
+        Map<String,Object> map=new HashMap<>();
+        map.put("page",pageNumber);
+        map.put("limit",pageSize);
+        PageQueryUtil pageQueryUtil=new PageQueryUtil(map);
+        List<MallUser> mallUserList=mallUserMapper.findMallUserList(pageQueryUtil);
+        int count=mallUserMapper.getTotalMallUsers(pageQueryUtil);
+        userListParam.setList(mallUserList);
+        userListParam.setTotalCount(count);
+        userListParam.setCurrPage(pageNumber);
+        return userListParam;
+    }
+
+    public String forbid(Long ids[]){
+        int count=mallUserMapper.lockUserBatch(ids,1);
+        if(count>=1){
+            return "success";
+        }else{
+            return "fail";
+        }
+    }
+    public String open(Long ids[]){
+        int count=mallUserMapper.lockUserBatch(ids,0);
+        if(count>=1){
+            return "success";
+        }else{
+            return "fail";
+        }
     }
 }

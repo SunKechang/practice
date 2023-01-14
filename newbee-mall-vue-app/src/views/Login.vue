@@ -90,7 +90,8 @@ export default {
           "loginName": this.ruleForm.username,
           "passwordMd5": this.$md5(this.ruleForm.password)
         })
-        // console.log(data,resultCode)
+        // token
+        console.log(data)
         if(resultCode==='500'){
           this.$message({
             message: '账号或密码错误,请重新输入',
