@@ -1,13 +1,3 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
-
 <template>
   <div class="cart-box">
     <s-header :name="'购物车'"></s-header>
@@ -34,6 +24,7 @@
                 />
               </div>
             </div>
+            <div class="delete-btn" @click="deleteGood(item.cartItemId)">删除</div>
           </div>
           <van-button
             slot="right"
@@ -58,15 +49,13 @@
     <div class="empty" v-if="!list.length">
       <van-icon name="smile-o" />
       <div class="title">购物车空空空如也</div>
-      <van-button color="#1baeae" type="primary" @click="goTo" block>前往首页</van-button>
+      <van-button color="rgb(237, 108, 62)" type="primary" @click="goTo" block>前往首页</van-button>
     </div>
-    <nav-bar></nav-bar>
   </div>
 </template>
 
 <script>
 import { Toast } from 'vant'
-import navBar from '@/components/NavBar'
 import sHeader from '@/components/SimpleHeader'
 import { getCart, deleteCartItem, modifyCart } from '../service/cart'
 export default {
@@ -80,7 +69,6 @@ export default {
     }
   },
   components: {
-    navBar,
     sHeader
   },
   mounted() {
@@ -108,7 +96,7 @@ export default {
       this.$router.go(-1)
     },
     goTo() {
-      this.$router.push({ path: 'home' })
+      this.$router.push({ path: 'hom' })
     },
     async onChange(value, detail) {
       if (this.list.filter(item => item.cartItemId == detail.name)[0].goodsCount == value) return
@@ -131,9 +119,6 @@ export default {
         return
       }
       const params = JSON.stringify(this.result)
-      // for(let i = 0; i < this.result.length; i++) {
-      //   await deleteCartItem(this.result[i])
-      // }
       this.$router.push({ path: `create-order?cartItemIds=${params}` })
     },
     async deleteGood(id) {
@@ -181,13 +166,23 @@ export default {
       }
     }
     .cart-body {
-      margin: 60px 0 100px 0;
+      margin: 60px auto 100px auto;
       padding-left: 10px;
+      width: 70%;
       .good-item {
         display: flex;
+        align-items: center;
+        .delete-btn {
+          margin-left: 20px;
+          background-color: rgb(213, 172, 84);
+          line-height: 40px;
+          text-align: center;
+          width: 60px;
+          border-radius: 5px;
+        }
         .good-img {
           img {
-            .wh(100px, 100px)
+            .wh(200px, 200px)
           }
         }
         .good-desc {
@@ -234,9 +229,16 @@ export default {
       }
     }
     .submit-all {
+      width: 70%;
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0 auto;
       margin-bottom: 50px;
       .van-checkbox {
-        margin-left: 10px
+        margin-left: 30px;
+        margin-right: 30px;
       }
       .van-submit-bar__text {
         margin-right: 10px

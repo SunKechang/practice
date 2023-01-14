@@ -3,14 +3,6 @@ package ltd.common.cloud.newbee.dto;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * 分页查询参数
- *
- * @author 13
- * @qq交流群 796794009
- * @email 2449207463@qq.com
- * @link https://github.com/newbee-ltd
- */
 public class PageQueryUtil extends LinkedHashMap<String, Object> {
     //当前页码
     private int page;
