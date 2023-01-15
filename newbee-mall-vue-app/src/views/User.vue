@@ -226,7 +226,8 @@ export default {
       console.log(key, keyPath)
       this.index = key
       if (key === 'Address') {
-        this.$router.push('/Address');
+        // this.$router.push('/Address');
+        this.$router.push({ path: 'address?from=mine' });
       }
     }
   }
