@@ -3,34 +3,42 @@
 <template>
   <div class="order-detail-box">
     <s-header :name="'订单详情'" @callback="close"></s-header>
+    <el-descriptions title="订单信息" style="margin-top: 100px">
+      <el-descriptions-item label="订单状态">{{ detail.orderStatusString }}</el-descriptions-item>
+      <el-descriptions-item label="订单编号">{{ detail.orderNo }}</el-descriptions-item>
+      <el-descriptions-item label="下单时间">{{ detail.createTime }}</el-descriptions-item>
+      <el-descriptions-item label="订单金额">¥ {{ detail.totalPrice }}</el-descriptions-item>
+    </el-descriptions>
     <div class="order-status">
-      <div class="status-item">
-        <label>订单状态：</label>
-        <span>{{ detail.orderStatusString }}</span>
-      </div>
-      <div class="status-item">
-        <label>订单编号：</label>
-        <span>{{ detail.orderNo }}</span>
-      </div>
-      <div class="status-item">
-        <label>下单时间：</label>
-        <span>{{ detail.createTime }}</span>
-      </div>
-      <van-button v-if="[1,2,3].includes(detail.orderStatus)" style="margin-bottom: 10px" color="#1baeae" block @click="handleConfirmOrder(detail.orderNo)">确认收货</van-button>
-      <van-button v-if="detail.orderStatus == 0" style="margin-bottom: 10px" color="#1baeae" block @click="showPayFn">去支付</van-button>
-      <van-button v-if="!(detail.orderStatus < 0 || detail.orderStatus == 4)" block @click="cancelOrder(detail.orderNo)">取消订单</van-button>
+      <el-button type="info" v-if="[1,2,3].includes(detail.orderStatus)" style="margin-bottom: 10px" color="#1baeae" block @click="handleConfirmOrder(detail.orderNo)">确认收货</el-button>
+      <el-button type="info" v-if="detail.orderStatus == 0" style="margin-bottom: 10px" color="#1baeae" block @click="showPayFn">去支付</el-button>
+      <el-button v-if="!(detail.orderStatus < 0 || detail.orderStatus == 4)" block @click="cancelOrder(detail.orderNo)" type="danger">取消订单</el-button>
     </div>
-    <div class="order-price">
-      <div class="price-item">
-        <label>商品金额：</label>
-        <span>¥ {{ detail.totalPrice }}</span>
-      </div>
-      <div class="price-item">
-        <label>配送方式：</label>
-        <span>普通快递</span>
-      </div>
-    </div>
-    <van-card
+    <el-table
+      :data="detail.newBeeMallOrderItemVOS"
+      style="width: 100%">
+      <el-table-column
+        label="缩略图">
+        <template slot-scope="scope">
+          <div>
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="prefix(scope.row.goodsCoverImg)"
+              :fit="fit"></el-image>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="goodsName"
+        label="商品">
+      </el-table-column>
+      <el-table-column
+        prop="goodsCount"
+        label="商品数量"
+        width="180">
+      </el-table-column>
+    </el-table>
+    <!-- <van-card
       v-for="item in detail.newBeeMallOrderItemVOS"
       :key="item.goodsId"
       style="background: #fff"
@@ -39,7 +47,7 @@
       desc="全场包邮"
       :title="item.goodsName"
       :thumb="prefix(item.goodsCoverImg)"
-    />
+    /> -->
     <van-popup
       v-model="showPay"
       position="bottom"

@@ -2,37 +2,43 @@
 
 <template>
   <div class="create-order">
-    <s-header :name="'生成订单'" @callback="deleteLocal"></s-header>
+    <el-page-header title="" content="生成订单"></el-page-header>
+    
     <div class="address-wrap">
-      <div class="name" @click="goTo">
-        <span>{{ address.userName }} </span>
-        <span>{{ address.userPhone }}</span>
-      </div>
-      <div class="address">
-        {{ address.provinceName }} {{ address.cityName }} {{ address.regionName }} {{ address.detailAddress }}
-      </div>
-      <van-icon class="arrow" name="arrow" />
+      <el-descriptions title="用户信息">
+        <el-descriptions-item label="用户名">{{ address.userName }}</el-descriptions-item>
+        <el-descriptions-item label="手机号">{{ address.userPhone }}</el-descriptions-item>
+        <el-descriptions-item label="收货地址">{{ address.provinceName }} {{ address.cityName }} {{ address.regionName }} {{ address.detailAddress }}</el-descriptions-item>
+      </el-descriptions>
     </div>
+    <el-button @click="goTo" type="primary">选择地址</el-button>
     <div class="good">
-      <div class="good-item" v-for="(item, index) in cartList" :key="index">
-        <div class="good-img"><img :src="prefix(item.goodsCoverImg)" alt=""></div>
-        <div class="good-desc">
-          <div class="good-title">
-            <span>{{ item.goodsName }}</span>
-            <span>x{{ item.goodsCount }}</span>
-          </div>
-          <div class="good-btn">
-            <div class="price">¥{{ item.sellingPrice }}</div>
-          </div>
-        </div>
-      </div>
+      <el-table
+      :data="cartList"
+      style="width: 100%">
+        <el-table-column
+          prop="goodsName"
+          label="商品名称"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="sellingPrice"
+          label="单价"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="goodsCount"
+          label="数量">
+        </el-table-column>
+      </el-table>
     </div>
+
     <div class="pay-wrap">
       <div class="price">
         <span>商品金额</span>
         <span>¥{{ total }}</span>
       </div>
-      <van-button @click="createOrder" class="pay-btn" color="#1baeae" type="primary" block>生成订单</van-button>
+      <el-button @click="createOrder" type="primary" style="width: 80%;margin-left: 10%;">生成订单</el-button>
     </div>
     <van-popup
       closeable
@@ -58,9 +64,6 @@ import { createOrder, payOrder } from '../service/order'
 import { setLocal, getLocal } from '@/common/js/utils'
 import { Toast } from 'vant'
 export default {
-  components: {
-    sHeader
-  },
   data() {
     return {
       cartList: [],
