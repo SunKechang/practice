@@ -2,23 +2,40 @@
   <div class="address-box">
     <s-header :name="'地址管理'" :back="'/user'"></s-header>
     <div class="address-item">
-      <van-address-list
-        v-if="from != 'mine'"
-        v-model="chosenAddressId"
-        :list="list"
-        default-tag-text="默认"
-        @add="onAdd"
-        @edit="onEdit"
-        @select="select"
-      />
-      <van-address-list
-        v-else
-        v-model="chosenAddressId"
-        :list="list"
-        default-tag-text="默认"
-        @add="onAdd"
-        @edit="onEdit"
-      />
+      <el-table
+      :data="list"
+      style="width: 100%">
+        <el-table-column
+          prop="name"
+          label="收货人"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="tel"
+          label="手机号"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="收货地址">
+        </el-table-column>
+        <el-table-column
+          label="地址类型">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.isDefault === true" type="success">默认地址</el-tag>
+          </template>
+          
+        </el-table-column>
+        <el-table-column
+          label="操作">
+          <template slot-scope="scope">
+            <el-button @click="select(scope.row)" type="success">选择</el-button>
+          </template>
+          
+        </el-table-column>
+        
+      </el-table>
+      <el-button @click="onAdd" type="primary">添加地址</el-button>
     </div>
   </div>
 </template>
@@ -28,9 +45,6 @@ import { Toast } from 'vant';
 import sHeader from '@/components/SimpleHeader'
 import { getAddressList } from '../service/address'
 export default {
-  components: {
-    sHeader
-  },
   data() {
     return {
       chosenAddressId: '1',

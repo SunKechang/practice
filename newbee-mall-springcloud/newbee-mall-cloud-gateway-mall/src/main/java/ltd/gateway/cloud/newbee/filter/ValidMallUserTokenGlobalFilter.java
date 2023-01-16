@@ -25,12 +25,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author 程序员十三
- * @qq交流群 791509631
- * @email 2449207463@qq.com
- * @link https://github.com/newbee-ltd
- */
 @Component
 public class ValidMallUserTokenGlobalFilter implements GlobalFilter, Ordered {
 

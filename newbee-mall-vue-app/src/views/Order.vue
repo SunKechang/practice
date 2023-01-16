@@ -32,6 +32,18 @@
         label="购买时间"
         width="360">
       </el-table-column>
+      <el-table-column
+        label="操作"
+        width="360">
+        <template slot-scope="scope">
+          <el-button
+            @click.native.prevent="goTo(scope.row.orderNo)"
+            type="text"
+            size="small">
+            详情
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       @current-change="handleCurrentChange"

@@ -1,8 +1,9 @@
 
 
 <template>
-  <div class="address-edit-box">
-    <s-header :name="`${type == 'add' ? '新增地址' : '编辑地址'}`"></s-header>
+   <div class="address-edit-box">
+    <el-page-header title="" :content="`${type == 'add' ? '新增地址' : '编辑地址'}`"></el-page-header>
+    <!-- <s-header :name="`${type == 'add' ? '新增地址' : '编辑地址'}`"></s-header> -->
     <van-address-edit
       class="edit"
       :area-list="areaList"
@@ -24,9 +25,6 @@ import sHeader from '@/components/SimpleHeader'
 import { addAddress, EditAddress, DeleteAddress, getAddressDetail } from '../service/address'
 import { tdist } from '@/common/js/utils'
 export default {
-  components: {
-    sHeader
-  },
   data() {
     return {
       areaList: {
