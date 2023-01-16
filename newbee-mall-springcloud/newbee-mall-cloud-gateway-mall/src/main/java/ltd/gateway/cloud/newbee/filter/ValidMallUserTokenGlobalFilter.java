@@ -25,7 +25,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * @author 程序员十三
+ * @qq交流群 791509631
+ * @email 2449207463@qq.com
+ * @link https://github.com/newbee-ltd
+ */
 @Component
 public class ValidMallUserTokenGlobalFilter implements GlobalFilter, Ordered {
 
@@ -45,6 +50,9 @@ public class ValidMallUserTokenGlobalFilter implements GlobalFilter, Ordered {
         ignoreURLs.add("/orders/swagger/v3/api-docs");
         ignoreURLs.add("/users/swagger/v3/api-docs");
         ignoreURLs.add("/goods/swagger/v3/api-docs");
+
+        ignoreURLs.add("/goods/mall/detail/{goodsId}");
+
 
         // 登录注册接口，直接放行
         if (ignoreURLs.contains(exchange.getRequest().getURI().getPath())) {
@@ -90,3 +98,4 @@ public class ValidMallUserTokenGlobalFilter implements GlobalFilter, Ordered {
     }
 
 }
+

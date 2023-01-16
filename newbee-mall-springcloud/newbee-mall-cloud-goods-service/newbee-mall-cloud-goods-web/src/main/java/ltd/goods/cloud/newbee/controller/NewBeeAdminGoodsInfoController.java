@@ -1,11 +1,4 @@
-/**
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2022 程序员十三 all rights reserved.
- * 版权所有，侵权必究！
- */
+
 package ltd.goods.cloud.newbee.controller;
 
 import io.seata.core.context.RootContext;
@@ -38,12 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author 13
- * @qq交流群 796794009
- * @email 2449207463@qq.com
- * @link https://github.com/newbee-ltd
- */
+
 @RestController
 @Api(value = "v1", tags = "后台管理系统商品模块接口")
 @RequestMapping("/goods/admin")
@@ -91,6 +79,7 @@ public class NewBeeAdminGoodsInfoController {
         logger.info("adminUser:{}", adminUser.toString());
         NewBeeMallGoods newBeeMallGoods = new NewBeeMallGoods();
         BeanUtil.copyProperties(goodsAddParam, newBeeMallGoods);
+        newBeeMallGoods.setGoodsCarousel(goodsAddParam.getGoodsCoverImg());
         String result = newBeeMallGoodsService.saveNewBeeMallGoods(newBeeMallGoods);
         if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
             return ResultGenerator.genSuccessResult();
@@ -109,6 +98,7 @@ public class NewBeeAdminGoodsInfoController {
         logger.info("adminUser:{}", adminUser.toString());
         NewBeeMallGoods newBeeMallGoods = new NewBeeMallGoods();
         BeanUtil.copyProperties(goodsEditParam, newBeeMallGoods);
+        newBeeMallGoods.setGoodsCarousel(goodsEditParam.getGoodsCoverImg());
         String result = newBeeMallGoodsService.updateNewBeeMallGoods(newBeeMallGoods);
         if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
             return ResultGenerator.genSuccessResult();

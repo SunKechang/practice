@@ -5,9 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-/**
- * @author 22729
- */
+
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan("ltd.user.cloud.newbee.dao")

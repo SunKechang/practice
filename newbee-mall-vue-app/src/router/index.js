@@ -21,8 +21,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'hom',
-    redirect: '/hom'
+    name: 'home',
+    redirect: '/home'
   },
   {
     path: '/login',
@@ -33,12 +33,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
   },
   {
-    path: '/hom',
-    name: 'hom',
+    path: '/home',
+    name: 'home',
     meta: {
       index: 1
     },
-    component: () => import(/* webpackChunkName: "home" */ '../views/Hom.vue'),
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
   },
   {
     path: '/cart',
@@ -70,7 +70,7 @@ const routes = [
     meta: {
       index: 3
     },
-    component: () => import(/* webpackChunkName: "product" */ '../views/ProductDetai.vue'),
+    component: () => import(/* webpackChunkName: "product" */ '../views/ProductDetail.vue'),
   },
   {
     path: '/user',

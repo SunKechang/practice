@@ -1,13 +1,11 @@
-/**
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2022 程序员十三 all rights reserved.
- * 版权所有，侵权必究！
- */
+
 package ltd.goods.cloud.newbee.controller;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.common.utils.BinaryUtil;
+import com.aliyun.oss.model.MatchMode;
+import com.aliyun.oss.model.PolicyConditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,17 +29,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-/**
- * @author 13
- * @qq交流群 796794009
- * @email 2449207463@qq.com
- * @link https://github.com/newbee-ltd
- */
 @RestController
 @Api(value = "v1", tags = "后台管理系统分类模块接口")
 @RequestMapping("/categories/admin")
@@ -164,6 +153,7 @@ public class NewBeeAdminGoodsCategoryController {
     @RequestMapping(value = "/batchDelete", method = RequestMethod.DELETE)
     @ApiOperation(value = "批量删除分类信息", notes = "批量删除分类信息")
     public Result delete(@RequestBody BatchIdParam batchIdParam, @TokenToAdminUser LoginAdminUser adminUser) {
+        System.out.println(batchIdParam);
         logger.info("adminUser:{}", adminUser.toString());
         if (batchIdParam == null || batchIdParam.getIds().length < 1) {
             return ResultGenerator.genFailResult("参数异常！");
@@ -173,5 +163,69 @@ public class NewBeeAdminGoodsCategoryController {
         } else {
             return ResultGenerator.genFailResult("删除失败");
         }
+    }
+    /**
+     * oss图传
+     */
+    @GetMapping("/oss/policy")
+    public Map<String,String> policy(){
+        // 阿里云账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM用户进行API访问或日常运维，请登录RAM控制台创建RAM用户。
+        String accessId = "LTAI5tQ65XNhmcrpQbjBYWND";
+        String accessKey = "2DKF6FGVgQYepS2MuBVWvcCnJdcNQ6";
+        // Endpoint以华东1（杭州）为例，其它Region请按实际情况填写。
+        String endpoint = "oss-cn-beijing.aliyuncs.com";
+        // 填写Bucket名称，例如examplebucket。
+        String bucket = "wuyanzu-imgs";
+        // 填写Host地址，格式为https://bucketname.endpoint。
+        String host = "https://"+bucket+"."+endpoint;
+//        // 设置上传回调URL，即回调服务器地址，用于处理应用服务器与OSS之间的通信。OSS会在文件上传完成后，把文件上传信息通过此回调URL发送给应用服务器。
+//        String callbackUrl = "https://192.168.0.0:8888";
+        // 设置上传到OSS文件的前缀，可置空此项。置空后，文件将上传至Bucket的根目录下。
+        String dir = "main-img/";
+
+        // 创建ossClient实例。
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessId, accessKey);
+        try {
+            long expireTime = 30;
+            long expireEndTime = System.currentTimeMillis() + expireTime * 1000;
+            Date expiration = new Date(expireEndTime);
+            PolicyConditions policyConds = new PolicyConditions();
+            policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 1048576000);
+            policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+
+            String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);
+            byte[] binaryData = postPolicy.getBytes("utf-8");
+            String encodedPolicy = BinaryUtil.toBase64String(binaryData);
+            String postSignature = ossClient.calculatePostSignature(postPolicy);
+
+            Map<String, String> respMap = new LinkedHashMap<String, String>();
+            respMap.put("accessId", accessId);
+            respMap.put("policy", encodedPolicy);
+            respMap.put("signature", postSignature);
+            respMap.put("dir", dir);
+            respMap.put("host", host);
+            respMap.put("expire", String.valueOf(expireEndTime / 1000));
+            return respMap;
+            // respMap.put("expire", formatISO8601Date(expiration));
+
+//            JSONObject jasonCallback = new JSONObject();
+//            jasonCallback.put("callbackUrl", callbackUrl);
+//            jasonCallback.put("callbackBody",
+//                    "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}");
+//            jasonCallback.put("callbackBodyType", "application/x-www-form-urlencoded");
+//            String base64CallbackBody = BinaryUtil.toBase64String(jasonCallback.toString().getBytes());
+//            respMap.put("callback", base64CallbackBody);
+//
+//            JSONObject ja1 = JSONObject.fromObject(respMap);
+//            // System.out.println(ja1.toString());
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            response.setHeader("Access-Control-Allow-Methods", "GET, POST");
+//            response(request, response, ja1.toString());
+
+        } catch (Exception e) {
+            // Assert.fail(e.getMessage());
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

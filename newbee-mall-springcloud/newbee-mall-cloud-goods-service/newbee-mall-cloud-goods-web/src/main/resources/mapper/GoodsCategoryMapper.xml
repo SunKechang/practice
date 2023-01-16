@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-严肃声明：
-开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
-本软件已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
-可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
-Copyright (c) 2022 程序员十三 all rights reserved.
-版权所有，侵权必究！
--->
+
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ltd.goods.cloud.newbee.dao.GoodsCategoryMapper">
     <resultMap id="BaseResultMap" type="ltd.goods.cloud.newbee.entity.GoodsCategory">
@@ -22,7 +15,7 @@ Copyright (c) 2022 程序员十三 all rights reserved.
         <result column="update_user" jdbcType="INTEGER" property="updateUser"/>
     </resultMap>
     <sql id="Base_Column_List">
-    category_id, category_level, parent_id, category_name, category_rank, is_deleted, 
+    category_id, category_level, parent_id, category_name, category_rank, is_deleted,
     create_time, create_user, update_time, update_user
   </sql>
     <select id="findGoodsCategoryList" parameterType="Map" resultMap="BaseResultMap">
@@ -95,13 +88,13 @@ Copyright (c) 2022 程序员十三 all rights reserved.
         </foreach>
     </update>
     <insert id="insert" parameterType="ltd.goods.cloud.newbee.entity.GoodsCategory">
-    insert into tb_newbee_mall_goods_category (category_id, category_level, parent_id, 
-      category_name, category_rank, is_deleted, 
-      create_time, create_user, update_time, 
+    insert into tb_newbee_mall_goods_category (category_id, category_level, parent_id,
+      category_name, category_rank, is_deleted,
+      create_time, create_user, update_time,
       update_user)
-    values (#{categoryId,jdbcType=BIGINT}, #{categoryLevel,jdbcType=TINYINT}, #{parentId,jdbcType=BIGINT}, 
-      #{categoryName,jdbcType=VARCHAR}, #{categoryRank,jdbcType=INTEGER}, #{isDeleted,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+    values (#{categoryId,jdbcType=BIGINT}, #{categoryLevel,jdbcType=TINYINT}, #{parentId,jdbcType=BIGINT},
+      #{categoryName,jdbcType=VARCHAR}, #{categoryRank,jdbcType=INTEGER}, #{isDeleted,jdbcType=TINYINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
       #{updateUser,jdbcType=INTEGER})
   </insert>
     <insert id="insertSelective" parameterType="ltd.goods.cloud.newbee.entity.GoodsCategory">

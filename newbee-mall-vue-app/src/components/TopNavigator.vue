@@ -3,7 +3,7 @@
     <div class="short_cut">
       <div class="wide">
         <el-menu style="float: right;" router="true" active-text-color="#f58c0c" background-color="#e3e4e5"  class="el-menu-demo" mode="horizontal" >
-          <el-menu-item  index="hom">首页</el-menu-item>
+          <el-menu-item  index="home">首页</el-menu-item>
           <el-menu-item  index="user">我的</el-menu-item>
           <el-menu-item  index="cart">购物车</el-menu-item>
           <el-submenu index="3">
