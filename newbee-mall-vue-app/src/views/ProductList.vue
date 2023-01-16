@@ -1,64 +1,60 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
+
 
 <template>
-  <div class="product-list-wrap">
-    <div class="product-list-content">
-      <header class="category-header wrap">
-        <i class="nbicon nbfanhui" @click="goBack"></i>
-        <div class="header-search">
-          <i class="nbicon nbSearch"></i>
-          <input
-            type="text"
-            class="search-title"
-            @mouseenter="textEnter"
-            @mouseleave="textLeave"
-            v-model="keyword"/>
-        </div>
-        <span class="search-btn" @click="getSearch">搜索</span>
-      </header>
-      <van-tabs type="card" color="#1baeae" @click="changeTab" >
-        <van-tab title="推荐" name=""></van-tab>
-        <van-tab title="新品" name="new"></van-tab>
-        <van-tab title="价格" name="price"></van-tab>
-      </van-tabs>
-    </div>
-    <van-pull-refresh v-model="refreshing" @refresh="onRefresh" class="product-list-refresh">
-      <van-list
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-        @offset="300"
-      >
-        <!-- <p v-for="item in list" :key="item">{{ item }}</p> -->
-        <div class="product-item" v-for="(item, index) in productList" :key="index" @click="productDetail(item)">
-          <img :src="prefix(item.goodsCoverImg)" />
-          <div class="product-info">
-            <p class="name">{{item.goodsName}}</p>
-            <p class="subtitle">{{item.goodsIntro}}</p>
-            <span class="price">￥ {{item.sellingPrice}}</span>
-          </div>
-        </div>
-      </van-list>
-    </van-pull-refresh>
-  </div>
+   <div class="product_list">
+     <TopNavigator>
+     </TopNavigator>
+     <div class="search_and_cart">
+       <div class="wide">
+         <div class="logo" style="float: left"><img style="width: 100%" src="https://img10.360buyimg.com/img/jfs/t1/50166/9/22920/11310/63a1993cE3800216e/105f3d456f0905bb.jpg"></div>
+         <el-input v-model="input" style="width: 546px;margin-top: 48px;margin-left: 82px;" placeholder="请输入内容"  class="input-with-select">
+           <el-button @click="searchGoods" style="background-color: #f58c0c;color: white;" slot="append"  icon="el-icon-search">搜索</el-button>
+         </el-input>
+         <el-button @click="goTo" style="background-color: #ED6C3E;color: white;" slot="append"  icon="el-icon-goods">购物车</el-button>
+         <div class="logo" style="float: right"><img style="width: 100%" src="https://img13.360buyimg.com/babel/jfs/t1/192532/18/31574/14301/63aeb38dF5c55c212/38245c8dbdee113c.jpg.avif"></div>
+       </div>
+     </div>
+     <div class="contents">
+       <div class="wide">
+         <div class="content">
+           <div class="wide" style="text-align:center;height: 731px;background-color:#fff;">
+             <el-tabs stretch="true" v-model="activeName" @tab-click="changeTab">
+               <el-tab-pane default-value label="推荐" name=""></el-tab-pane>
+               <el-tab-pane label="新品" name="new"></el-tab-pane>
+               <el-tab-pane label="价格" name="price"></el-tab-pane>
+             </el-tabs>
+             <div class="content" v-for="(item, index) in productList" :key="index" @click="goToDetail(item)">
+               <el-image style="padding-top: 5px;height: 185px;width:217px" fit="fill" :src="prefix(item.goodsCoverImg)"></el-image>
+               <div class="content_name" ><h3>{{item.goodsName}}</h3></div>
+               <div class="content_describe"><h3>{{item.goodsIntro}}</h3></div>
+               <div class="content_price"><span class="price_span">¥{{item.sellingPrice}}</span></div>
+             </div>
+             <div style="clear: both"></div>
+             <el-pagination
+               hide-on-single-page
+               style="float: right"
+               background
+               layout="prev, pager, next"
+               :page-count="totalPage" @current-change="change" :current-page="page">
+             </el-pagination>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
 </template>
 
 <script>
 import { getQueryString } from '@/common/js/utils'
 import { search } from '../service/good'
 import { Toast } from 'vant'
+import TopNavigator from "@/components/TopNavigator";
 export default {
+  components: { TopNavigator },
   data() {
     return {
+      input:"",
+      activeName:'',
       keyword: this.$route.query.keyword || '',
       searchBtn: false,
       seclectActive: false,
@@ -73,11 +69,11 @@ export default {
     }
   },
   mounted() {
-    // window.addEventListener('scroll', this.pageScroll)
-    // setTimeout(() => {
-    //     this.isLoading = false
-    // }, 500)
-    // this.init()
+    window.addEventListener('scroll', this.pageScroll)
+    setTimeout(() => {
+        this.isLoading = false
+    }, 500)
+    this.init()
   },
   methods: {
     async init() {
@@ -88,8 +84,9 @@ export default {
         this.loading = false;
         return
       }
+      console.log(this.page)
       const { data, data: { list } } = await search({ pageNumber: this.page, goodsCategoryId: categoryId, keyword: this.keyword, orderBy: this.orderBy })
-      this.productList = this.productList.concat(list)
+      this.productList = list
       this.totalPage = data.totalPage
       this.loading = false;
       if (this.page >= data.totalPage) this.finished = true
@@ -97,21 +94,24 @@ export default {
     goBack() {
       this.$router.go(-1)
     },
-    productDetail(item) {
-      this.$router.push({ path: `product/${item.goodsId}` })
+    goToDetail(item) {
+      this.$router.push({ path: `product`,query:{id:item.goodsId} })
     },
-    textEnter() {
-
+    goTo()
+    {
+      this.$router.push({ path: '/cart' })
     },
-    textLeave() {
-
-    },
-    getSearch() {
-      this.onRefresh()
+    searchGoods() {
+      this.keyword=this.input;
+      this.init();
     },
     pageScroll() {
       let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       scrollTop > 50 ? this.seclectActive = true : this.seclectActive = false
+    },
+    change(page){
+      this.page=page
+        this.init()
     },
     onLoad() {
       if (!this.refreshing && this.page < this.totalPage) {
@@ -130,8 +130,8 @@ export default {
       this.page = 1
       this.onLoad()
     },
-    changeTab(name, title) {
-      this.orderBy = name
+    changeTab() {
+      this.orderBy = this.activeName
       this.onRefresh()
     }
   }
@@ -139,113 +139,96 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  @import '../common/style/mixin';
-  .product-list-content {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    background: #fff;
-    .category-header {
-      .fj();
-      width: 100%;
-      height: 50px;
-      line-height: 50px;
-      padding: 0 15px;
-      .boxSizing();
-      font-size: 15px;
-      color: #656771;
-      z-index: 10000;
-      &.active {
-        background: @primary;
-      }
-      .icon-left {
-        font-size: 25px;
-        font-weight: bold;
-      }
-      .header-search {
-        display: flex;
-        width: 76%;
-        height: 20px;
-        line-height: 20px;
-        margin: 10px 0;
-        padding: 5px 0;
-        color: #232326;
-        background: #F7F7F7;
-        .borderRadius(20px);
-        .nbSearch {
-          padding: 0 5px 0 20px;
-          font-size: 17px;
-        }
-        .search-title {
-          font-size: 12px;
-          color: #666;
-          background: #F7F7F7;
-        }
-    }
-    .icon-More {
-      font-size: 20px;
-    }
-    .search-btn {
-      height: 28px;
-      margin: 8px 0;
-      line-height: 28px;
-      padding: 0 5px;
-      color: #fff;
-      background: @primary;
-      .borderRadius(5px);
-      margin-top: 10px;
-    }
-  }
+body{
+  min-width: 1190px;
 }
-  .product-list-refresh {
-    margin-top: 78px;
-    .product-item {
-      .fj();
-      width: 100%;
-      height: 120px;
-      padding: 10px 0;
-      border-bottom: 1px solid #dcdcdc;
-      img {
-        width: 140px;
-        height: 120px;
-        padding: 0 10px;
-        .boxSizing();
-      }
-      .product-info {
-          width: 56%;
-          height: 120px;
-          padding: 5px;
-          text-align: left;
-          .boxSizing();
-          p {
-            margin: 0
-          }
-          .name {
-            width: 100%;
-            max-height: 40px;
-            line-height: 20px;
-            font-size: 15px;
-            color: #333;
-            overflow: hidden;
-            text-overflow:ellipsis;
-            white-space: nowrap;
-          }
-          .subtitle {
-            width: 100%;
-            max-height: 20px;
-            padding: 10px 0;
-            line-height: 25px;
-            font-size: 13px;
-            color: #999;
-            overflow: hidden;
-          }
-          .price {
-            color: @primary;
-            font-size: 16px;
-          }
-      }
-  }
+.product_list{
+  overflow: scroll;
+}
+.product_list{
+  background-color: #f4f4f4;
+}
+.wide{
+  margin: auto;
+  width: 1190px;
+}
+.search_and_cart{
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+.search_and_cart .wide{
+  position: relative;
+  z-index: 11;
+  height: 140px;
+}
+.logo{
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  margin: 10px 0px 0px 0px;
+  width: 190px;
+  height: 120px;
+}
+.contents{
+  background-color: #f4f4f4;
+
+}
+.contents .wide:after{
+  position: relative;
+  z-index: 11;
+  padding-top: 10px;
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+}
+.content{
+  float: left;
+  height: 310px;
+  width: 217px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+}
+.content_name{
+  width: 160px;margin-left: auto;margin-right: auto;margin-top: 13px;
+}
+.content_name h3{
+  font-size: 15px;font-weight: 400;color: #333;-webkit-transition: color .2s ease;transition: color .2s ease;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+}
+.content_describe{
+  width: 188px;margin-left: auto;margin-right: auto;margin-top: 13px;
+}
+.content_describe h3{
+  font-size: 12px;font-weight: 400;color: #333;-webkit-transition: color .2s ease;transition: color .2s ease;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+}
+.content_price{
+  position: relative;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  line-height: 24px;
+  overflow: hidden;
+  text-align: center;
+  width: 160px;
+  height: 24px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 7px;
+}
+.price_span{
+  height: 100%;
+  width: 66px;
+  background: #fff;
+  text-align: center;
+  color: #e1251b;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: top;
 }
 </style>

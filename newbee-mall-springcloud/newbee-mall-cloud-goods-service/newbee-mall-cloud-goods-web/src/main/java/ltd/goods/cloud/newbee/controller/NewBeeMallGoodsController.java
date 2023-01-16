@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Api(value = "v1", tags = "新蜂商城商品相关接口")
+@Api(value = "v1", tags = "商城商品相关接口")
 @RequestMapping("/goods/mall")
 public class NewBeeMallGoodsController {
 
@@ -102,9 +102,6 @@ public class NewBeeMallGoodsController {
         if (0 != goods.getGoodsSellStatus()) {
             NewBeeMallException.fail(ServiceResultEnum.GOODS_PUT_DOWN.getResult());
         }
-//        System.out.println(2);
-//        newBeeMallGoodsService.insertBrowse(loginMallUserToken.getUserId(), goods.getGoodsCategoryId());
-//        System.out.println(1);
         NewBeeMallGoodsDetailVO goodsDetailVO = new NewBeeMallGoodsDetailVO();
         BeanUtil.copyProperties(goods, goodsDetailVO);
         goodsDetailVO.setGoodsCarouselList(goods.getGoodsCarousel().split(","));

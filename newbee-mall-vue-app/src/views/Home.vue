@@ -1,67 +1,183 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
-
 <template>
-  <div>
-    <header class="home-header wrap" :class="{'active' : headerScroll}">
-        <router-link tag="i" to="./category"><i class="nbicon nbmenu2"></i></router-link>
-        <div class="header-search">
-            <span class="app-name">新蜂商城</span>
-            <i class="iconfont icon-search"></i>
-            <router-link tag="span" class="search-title" to="./product-list?from=home">山河无恙，人间皆安</router-link>
+  <div class="home">
+    <TopNavigator>
+    </TopNavigator>
+    <div class="top_container">
+      <div class="search_and_cart">
+        <div class="wide">
+          <div class="logo" style="float: left"><img style="width: 100%" src="https://img10.360buyimg.com/img/jfs/t1/50166/9/22920/11310/63a1993cE3800216e/105f3d456f0905bb.jpg"></div>
+          <el-input v-model="input" style="width: 546px;margin-top: 48px;margin-left: 82px;" placeholder="请输入内容"  class="input-with-select">
+            <el-button @click="goToSearch" style="background-color: #f58c0c;color: white;" slot="append"  icon="el-icon-search">搜索</el-button>
+          </el-input>
+          <el-button @click="goTo" style="background-color: #ED6C3E;color: white;" slot="append"  icon="el-icon-goods">购物车</el-button>
+          <div class="logo" style="float: right"><img style="width: 100%" src="https://img13.360buyimg.com/babel/jfs/t1/192532/18/31574/14301/63aeb38dF5c55c212/38245c8dbdee113c.jpg.avif"></div>
         </div>
-        <router-link class="login" tag="span" to="./login" v-if="!isLogin">登录</router-link>
-        <router-link class="login" tag="span" to="./user" v-else>
-          <van-icon name="manager-o" />
-        </router-link>
-    </header>
-    <nav-bar></nav-bar>
-    <swiper :list="swiperList"></swiper>
-    <div class="category-list">
-      <div v-for="item in categoryList" v-bind:key="item.categoryId">
-        <img :src="item.imgUrl">
-        <span>{{item.name}}</span>
       </div>
-    </div>
-    <div class="good">
-      <header class="good-header">新品上线</header>
-      <div class="good-box">
-        <div class="good-item" v-for="item in newGoodses" :key="item.goodsId" @click="goToDetail(item)">
-          <img :src="prefix(item.goodsCoverImg)" alt="">
-          <div class="good-desc">
-            <div class="title">{{ item.goodsName }}</div>
-            <div class="price">¥ {{ item.sellingPrice }}</div>
+      <div class="sort_and_images">
+        <div class="wide">
+          <div class="sandi_aside">
+            <el-menu   class="el-menu-demo" mode="vertical">
+              <el-menu-item index="1">
+                <el-popover
+                  placement="right"
+                  trigger="hover">
+                  <span slot="reference" >
+                    家电<el-divider direction="vertical"></el-divider>数码<el-divider direction="vertical"></el-divider>手机<i class="el-icon-arrow-right"></i>
+                  </span>
+                  <el-menu @select="goToSearch" class="el-menu-demo" mode="vertical">
+                    <el-menu-item index="10">家电</el-menu-item>
+                    <el-menu-item index="11">数码</el-menu-item>
+                    <el-menu-item index="12">手机</el-menu-item>
+                  </el-menu>
+                </el-popover>
+              </el-menu-item>
+              <el-menu-item index="2">
+                <el-popover
+                  placement="right"
+                  trigger="hover">
+                  <span slot="reference">
+                    女装<el-divider direction="vertical"></el-divider>男装<el-divider direction="vertical"></el-divider>穿搭<i class="el-icon-arrow-right"></i>
+                  </span>
+                  <el-menu @select="goToSearch"  class="el-menu-demo" mode="vertical">
+                    <el-menu-item index="14">女装</el-menu-item>
+                    <el-menu-item index="15">男装</el-menu-item>
+                    <el-menu-item index="16">穿搭</el-menu-item>
+                  </el-menu>
+                </el-popover>
+              </el-menu-item>
+              <el-menu-item index="9">
+                <el-popover
+                  placement="right"
+                  trigger="hover">
+                  <span slot="reference">
+                    运动<el-divider direction="vertical"></el-divider>户外<el-divider direction="vertical"></el-divider>乐器<i class="el-icon-arrow-right"></i>
+                  </span>
+                  <el-menu @select="goToSearch"  class="el-menu-demo" mode="vertical">
+                    <el-menu-item index="13">运动</el-menu-item>
+                    <el-menu-item index="20">户外</el-menu-item>
+                    <el-menu-item index="21">乐器</el-menu-item>
+                  </el-menu>
+                </el-popover>
+              </el-menu-item>
+              <el-menu-item index="7">
+                <el-popover
+                  placement="right"
+                  trigger="hover">
+                  <span slot="reference">
+                    家具<el-divider direction="vertical"></el-divider>家饰<el-divider direction="vertical"></el-divider>家纺<i class="el-icon-arrow-right"></i>
+                  </span>
+                  <el-menu @select="goToSearch"  class="el-menu-demo" mode="vertical">
+                    <el-menu-item index="17">家具</el-menu-item>
+                    <el-menu-item index="19">家纺</el-menu-item>
+                    <el-menu-item index="18">家饰</el-menu-item>
+                  </el-menu>
+                </el-popover>
+              </el-menu-item>
+              <el-menu-item index="6">
+                <el-popover
+                  placement="right"
+                  trigger="hover">
+                  <span slot="reference">
+                    游戏<el-divider direction="vertical"></el-divider>动漫<el-divider direction="vertical"></el-divider>影视<i class="el-icon-arrow-right"></i>
+                  </span>
+                  <el-menu @select="goToSearch" class="el-menu-demo" mode="vertical">
+                    <el-menu-item index="22">游戏</el-menu-item>
+                    <el-menu-item index="23">动漫</el-menu-item>
+                    <el-menu-item index="24">影视</el-menu-item>
+                  </el-menu>
+                </el-popover>
+              </el-menu-item>
+              <el-menu-item index="3">
+                <el-popover
+                  placement="right"
+                  trigger="hover">
+                  <span slot="reference">
+                    美妆<el-divider direction="vertical"></el-divider>清洁<el-divider direction="vertical"></el-divider>宠物<i class="el-icon-arrow-right"></i>
+                  </span>
+                  <el-menu @select="goToSearch"  class="el-menu-demo" mode="vertical">
+                    <el-menu-item index="25">美妆</el-menu-item>
+                    <el-menu-item index="26">宠物</el-menu-item>
+                    <el-menu-item index="27">清洁</el-menu-item>
+                  </el-menu>
+                </el-popover>
+              </el-menu-item>
+              <el-menu-item index="4">
+                <el-popover
+                  placement="right"
+                  trigger="hover">
+                  <span slot="reference">
+                    工具<el-divider direction="vertical"></el-divider>装修<el-divider direction="vertical"></el-divider>建材<i class="el-icon-arrow-right"></i>
+                  </span>
+                  <el-menu @select="goToSearch"  class="el-menu-demo" mode="vertical">
+                    <el-menu-item index="29">工具</el-menu-item>
+                    <el-menu-item index="30">装修</el-menu-item>
+                    <el-menu-item index="31">建材</el-menu-item>
+                  </el-menu>
+                </el-popover>
+              </el-menu-item>
+              <el-menu-item index="8">
+                <el-popover
+                  placement="right"
+                  trigger="hover">
+                  <span slot="reference">
+                    鞋靴<el-divider direction="vertical"></el-divider>箱包<el-divider direction="vertical"></el-divider>配件<i class="el-icon-arrow-right"></i>
+                  </span>
+                  <el-menu @select="goToSearch"  class="el-menu-demo" mode="vertical">
+                    <el-menu-item index="28">配件</el-menu-item>
+                    <el-menu-item index="35">鞋靴</el-menu-item>
+                    <el-menu-item index="36">箱包</el-menu-item>
+                  </el-menu>
+                </el-popover>
+              </el-menu-item>
+              <el-menu-item index="5">
+                <el-popover
+                  placement="right"
+                  trigger="hover">
+                  <span slot="reference">
+                    玩具<el-divider direction="vertical"></el-divider>孕产<el-divider direction="vertical"></el-divider>用品<i class="el-icon-arrow-right"></i>
+                  </span>
+                  <el-menu  @select="goToSearch" class="el-menu-demo" mode="vertical">
+                    <el-menu-item index="37">玩具</el-menu-item>
+                  </el-menu>
+                </el-popover>
+              </el-menu-item>
+            </el-menu>
+          </div>
+          <div class="sandi_images">
+            <el-carousel height="475px" :interval="5000" arrow="always">
+              <el-carousel-item height="475px"  v-for="item in swiperList" :key="item">
+                <el-image style="height: 475px;width: 985px" fit="fill" :src="item.carouselUrl"></el-image>
+              </el-carousel-item>
+            </el-carousel>
           </div>
         </div>
       </div>
-    </div>
-    <div class="good">
-      <header class="good-header">热门商品</header>
-      <div class="good-box">
-        <div class="good-item" v-for="item in hots" :key="item.goodsId" @click="goToDetail(item)">
-          <img :src="prefix(item.goodsCoverImg)" alt="">
-          <div class="good-desc">
-            <div class="title">{{ item.goodsName }}</div>
-            <div class="price">¥ {{ item.sellingPrice }}</div>
+      <div class="wide"><el-divider style="background-color:#f4f4f4;">爆款推荐</el-divider></div>
+      <div class="contents">
+        <div class="wide">
+          <div class="content" v-for="item in hots" :key="item" @click="goToDetail(item)">
+            <el-image style="padding-top: 5px; height: 185px;width:217px" fit="fill" :src="prefix(item.goodsCoverImg)"></el-image>
+            <div class="content_name"><h3>{{item.goodsName}}</h3></div>
+            <div class="content_describe" ><h3>{{item.goodsIntro}}</h3></div>
+            <div class="content_price"><span class="price_span">¥{{item.sellingPrice}}</span></div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="good" :style="{ paddingBottom: '100px'}">
-      <header class="good-header">最新推荐</header>
-      <div class="good-box">
-        <div class="good-item" v-for="item in recommends" :key="item.goodsId" @click="goToDetail(item)">
-          <img :src="prefix(item.goodsCoverImg)" alt="">
-          <div class="good-desc">
-            <div class="title">{{ item.goodsName }}</div>
-            <div class="price">¥ {{ item.sellingPrice }}</div>
+        <div class="wide" ><el-divider style="background-color:#f4f4f4;">新品上市</el-divider></div>
+        <div class="wide">
+          <div class="content" v-for="item in newGoods" :key="item" @click="goToDetail(item)">
+            <el-image style="padding-top: 5px;height: 185px;width:217px" fit="fill" :src="prefix(item.goodsCoverImg)"></el-image>
+            <div class="content_name" ><h3>{{item.goodsName}}</h3></div>
+            <div class="content_describe"><h3>{{item.goodsIntro}}</h3></div>
+            <div class="content_price"><span class="price_span">¥{{item.sellingPrice}}</span></div>
+          </div>
+        </div>
+        <div class="wide" ><el-divider style="background-color:#f4f4f4;">猜你喜欢</el-divider></div>
+        <div class="wide">
+          <div class="content" v-for="item in recommendGoods" :key="item" @click="goToDetail(item)">
+            <el-image style="padding-top: 5px;height: 185px;width:217px" fit="fill" :src="prefix(item.goodsCoverImg)"></el-image>
+            <div class="content_name" ><h3>{{item.goodsName}}</h3></div>
+            <div class="content_describe"><h3>{{item.goodsIntro}}</h3></div>
+            <div class="content_price"><span class="price_span">¥{{item.sellingPrice}}</span></div>
           </div>
         </div>
       </div>
@@ -70,70 +186,23 @@
 </template>
 
 <script>
-import navBar from '@/components/NavBar'
-import swiper from '@/components/Swiper'
-import { getHome } from '../service/home'
-import { getUserInfo } from '../service/user'
-import { getLocal } from '@/common/js/utils'
-import { Toast } from 'vant'
+
+import TopNavigator from '@/components/TopNavigator'
+import {getLocal} from "@/common/js/utils";
+import {Toast} from "vant";
+import {getHome} from "@/service/home";
+
 export default {
-  name: 'home',
-  data() {
-    return {
+  name: 'Hom',
+  components: { TopNavigator },
+  data(){
+    return{
+      input:"",
       swiperList: [],
-      isLogin: false,
-      headerScroll: false,
-      hots: [],
-      newGoodses: [],
-      recommends: [],
-      categoryList: [
-          {
-            name: '新蜂超市',
-            imgUrl: '//s.weituibao.com/1583585285461/cs.png',
-            categoryId: 100001
-          }, {
-            name: '新蜂服饰',
-            imgUrl: '//s.weituibao.com/1583585285468/fs.png',
-            categoryId: 100003
-          }, {
-            name: '全球购',
-            imgUrl: '//s.weituibao.com/1583585285470/qq.png',
-            categoryId: 100002
-          }, {
-            name: '新蜂生鲜',
-            imgUrl: '//s.weituibao.com/1583585285472/sx.png',
-            categoryId: 100004
-          }, {
-            name: '新蜂到家',
-            imgUrl: '//s.weituibao.com/1583585285467/dj.png',
-            categoryId: 100005
-          }, {
-            name: '充值缴费',
-            imgUrl: '//s.weituibao.com/1583585285465/cz.png',
-            categoryId: 100006
-          }, {
-            name: '9.9元拼',
-            imgUrl: '//s.weituibao.com/1583585285469/pt.png',
-            categoryId: 100007
-          }, {
-            name: '领劵',
-            imgUrl: '//s.weituibao.com/1583585285468/juan.png',
-            categoryId: 100008
-          }, {
-            name: '省钱',
-            imgUrl: '//s.weituibao.com/1583585285471/sq.png',
-            categoryId: 100009
-          }, {
-            name: '全部',
-            imgUrl: '//s.weituibao.com/1583585285470/qb.png',
-            categoryId: 100010
-          }
-      ],
+      hots:[],
+      newGoods:[],
+      recommendGoods:[]
     }
-  },
-  components: {
-    navBar,
-    swiper
   },
   async mounted() {
     const token = getLocal('token')
@@ -148,187 +217,180 @@ export default {
     const { data } = await getHome()
     console.log(data)
     this.swiperList = data.carousels
-    this.newGoodses = data.newGoodses
+    this.newGoods = data.newGoodses
     this.hots = data.hotGoodses
-    this.recommends = data.recommendGoodses
+    this.recommendGoods = data.recommendGoodses
     Toast.clear()
   },
-  methods: {
-    pageScroll() {
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      scrollTop > 100 ? this.headerScroll = true : this.headerScroll = false
-    },
+  methods:{
     goToDetail(item) {
-      this.$router.push({ path: `product/${item.goodsId}` })
+      this.$router.push({ path: `product`,query:{id:item.goodsId} })
+    },
+    goTo() {
+      this.$router.push({ path: '/cart' })
+    },
+    goToSearch(index){
+      if((typeof index)=="object")index=''
+      this.$router.push({ path: `product-list?categoryId=${index}&keyword=${this.input}`})
     }
   }
 }
 </script>
+<style scoped>
+body{
+  min-width: 1190px;
+}
+.home{
+  background-color: #f4f4f4;
+}
+.el-header, .el-footer {
+  background-color: #B3C0D1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+}
 
-<style lang="less" scoped >
-  @import '../common/style/mixin';
-  .home-header {
-      position: fixed;
-      left: 0;
-      top: 0;
-      .wh(100%, 50px);
-      .fj();
-      line-height: 50px;
-      padding: 0 15px;
-      .boxSizing();
-      font-size: 15px;
-      color: #fff;
-      z-index: 10000;
-      .nbmenu2 {
-        color: @primary;
-      }
-      &.active {
-        background: @primary;
-        .nbmenu2 {
-          color: #fff;
-        }
-        .login {
-          color: #fff;
-        }
-      }
+.el-aside {
+  background-color: #D3DCE6;
+  color: #333;
+  text-align: center;
+  line-height: 200px;
+}
 
-      .header-search {
-          display: flex;
-          .wh(74%, 20px);
-          line-height: 20px;
-          margin: 10px 0;
-          padding: 5px 0;
-          color: #232326;
-          background: rgba(255, 255, 255, .7);
-          border-radius: 20px;
-          .app-name {
-              padding: 0 10px;
-              color: @primary;
-              font-size: 20px;
-              font-weight: bold;
-              border-right: 1px solid #666;
-          }
-          .icon-search {
-              padding: 0 10px;
-              font-size: 17px;
-          }
-          .search-title {
-              font-size: 12px;
-              color: #666;
-              line-height: 21px;
-          }
-      }
-      .icon-iconyonghu{
-        color: #fff;
-        font-size: 22px;
-      }
-      .login {
-        color: @primary;
-        line-height: 52px;
-        .van-icon-manager-o {
-          font-size: 20px;
-          vertical-align: -3px;
-        }
-      }
-  }
-  .category-list {
-    display: flex;
-    flex-shrink: 0;
-    flex-wrap: wrap;
-    width: 100%;
-    padding-bottom: 13px;
-    div {
-      display: flex;
-      flex-direction: column;
-      width: 20%;
-      text-align: center;
-      img {
-        .wh(40px, 40px);
-        margin: 13px auto 8px auto;
-      }
-    }
-  }
-  .good {
-    .good-header {
-      background: #f9f9f9;
-      height: 50px;
-      line-height: 50px;
-      text-align: center;
-      color: @primary;
-      font-size: 16px;
-      font-weight: 500;
-    }
-    .good-box {
-      display: flex;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-      .good-item {
-        box-sizing: border-box;
-        width: 50%;
-        border-bottom: 1PX solid #e9e9e9;
-        padding: 10px 10px;
-        img {
-          display: block;
-          width: 120px;
-          margin: 0 auto;
-        }
-        .good-desc {
-          text-align: center;
-          font-size: 14px;
-          padding: 10px 0;
-          .title {
-            color: #222333;
-          }
-          .price {
-            color: @primary;
-          }
-        }
-        &:nth-child(2n + 1) {
-          border-right: 1PX solid #e9e9e9;
-        }
-      }
-    }
-  }
-  .floor-list {
-      width: 100%;
-      padding-bottom: 50px;
-      .floor-head {
-        width: 100%;
-        height: 40px;
-        background: #F6F6F6;
-      }
-      .floor-content {
-        display: flex;
-        flex-shrink: 0;
-        flex-wrap: wrap;
-        width: 100%;
-        .boxSizing();
-        .floor-category {
-          width: 50%;
-          padding: 10px;
-          border-right: 1px solid #dcdcdc;
-          border-bottom: 1px solid #dcdcdc;
-          .boxSizing();
-          &:nth-child(2n) {
-            border-right: none;
-          }
-          p {
-            font-size: 17px;
-            color: #333;
-            &:nth-child(2) {
-              padding: 5px 0;
-              font-size: 13px;
-              color: @primary;
-            }
-          }
-          .floor-products {
-            .fj();
-            width: 100%;
-            img {
-              .wh(65px, 65px);
-            }
-          }
-      }
-    }
-  }
+.el-main {
+  background-color: #E9EEF3;
+  color: #333;
+  text-align: center;
+  line-height: 160px;
+}
+
+body > .el-container {
+  margin-bottom: 40px;
+}
+.wide{
+  margin: auto;
+  width: 1190px;
+}
+.search_and_cart{
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+.search_and_cart .wide{
+  position: relative;
+  z-index: 11;
+  height: 140px;
+}
+.logo{
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  margin: 10px 0px 0px 0px;
+  width: 190px;
+  height: 120px;
+}
+.sort_and_images{
+  height: 485px;
+  background-color: #f4f4f4;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.sandi_aside{
+  position: relative;
+  float: left;
+  height: 475px;
+  width: 190px;
+  margin-right: 15px;
+  background-color: #fff;
+}
+.sandi_aside .el-menu-item{
+  height: 53px;
+}
+.sandi_images{
+  float: left;
+  height: 475px;
+  width: 985px;
+  background-color: #fff;
+}
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 18px;
+  opacity: 0.75;
+  line-height: 300px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
+}
+.el-divider__text{
+  background-color: #f4f4f4;
+  font-size: 30px;
+}
+.contents{
+  background-color: #f4f4f4;
+
+}
+.contents .wide:after{
+  position: relative;
+  z-index: 11;
+  padding-top: 10px;
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+}
+.content{
+  float: left;
+  height: 310px;
+  width: 217px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+}
+.content_name{
+  width: 160px;margin-left: auto;margin-right: auto;margin-top: 13px;
+}
+.content_name h3{
+  font-size: 15px;font-weight: 400;color: #333;-webkit-transition: color .2s ease;transition: color .2s ease;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+}
+.content_describe{
+  width: 188px;margin-left: auto;margin-right: auto;margin-top: 13px;
+}
+.content_describe h3{
+  font-size: 12px;font-weight: 400;color: #333;-webkit-transition: color .2s ease;transition: color .2s ease;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+}
+.content_price{
+  position: relative;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  line-height: 24px;
+  overflow: hidden;
+  text-align: center;
+  width: 160px;
+  height: 24px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 7px;
+}
+.price_span{
+  height: 100%;
+  width: 66px;
+  background: #fff;
+  text-align: center;
+  color: #e1251b;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
 </style>
